@@ -1,4 +1,4 @@
-function [W,A,s,p] = c2_iter(cfg, W, G, B, E, P, M, X, C)
+function [W,A] = c2_iter(cfg, W, G, B, E, P, M, X, C)
 
 % W: centroids (target codebook)
 % A: assignment of cells to centroids

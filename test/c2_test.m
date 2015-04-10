@@ -90,7 +90,7 @@ P = xload(cfg.pop);
 M = xload(cfg.mean);
 cfg.K = size(W, 2);
 u = cputime;
-[W,A,s,p] = c2_iter(cfg, W, G, B, E, P, M, X, C);
+[W,A] = c2_iter(cfg, W, G, B, E, P, M, X, C);
 fprintf('Iterate time: %.3fs\n', cputime - u);
 xsave(cfg.cen, W);
 xsave(cfg.asgn, A);
