@@ -1,4 +1,4 @@
-anim/animate
+anim/*.pdf
 .gitignore_src
 .ignore
 sub/search_lu.mexa64
