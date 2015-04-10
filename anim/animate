@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# crop margins from each of a sequence of pdf files named iter*.pdf
+for f in iter*.pdf; do pdfcrop $f; done
+
+# then concatenate all into a single file named animate.pdf
+pdftk *crop.pdf cat output animate.pdf
+
+# finally, delete all intermediate pdf files
+rm iter*.pdf
