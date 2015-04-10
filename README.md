@@ -10,7 +10,7 @@ Licence
 Directory structure
 -------------------
 
-`ikm` constists primarily of Matlab `.m` files, but also includes a number of `.cpp` files which are compiled as `mex` file to interface Matlab. The directory structure is:
+`ikm` constists primarily of Matlab `.m` files, but also includes a number of `.cpp` files which are compiled as `mex` files to interface Matlab. The directory structure is:
 
 	/anim      animation of algorithm iterations on 2D example
 	/config    project configuration, including datasets, paths etc.
