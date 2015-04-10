@@ -1,13 +1,13 @@
-function disp_iter(it, f, P, A)
+function disp_iter(it, p, P, A)
 
 % it: iteration
-% f: centroid population
+% p: centroid population
 % A: centroid assignment per point
 % P: cell population
 
-K = length(f);
-u = find(P & A == K+1);
+K = length(p);
+u = find(P & A == K);
 fprintf('Iteration %d\n', it)
 fprintf('> %d/%d unassigned non-empty cells\n', length(u), prod(size(A)))
 fprintf('> %d/%d unassigned points\n', sum(P(u)), sum(P(:)))
-fprintf('> %d/%d empty centroids\n', length(find(f == 0)), K)
+fprintf('> %d/%d empty centroids\n', length(find(p == 0)), K)

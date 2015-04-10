@@ -19,7 +19,8 @@ addpath('../lib', '../util', '../disp', '../config', '../sub', '../quant');
 % compile mex files
 compile('../sub/search_lu')
 compile('../sub/search_seq')
-compile('../sub/search_pseq',true)
+compile('../sub/search_pseq')
+compile('../sub/ikm_iter', true)
 
 % dataset location
 cfg.home  = home;

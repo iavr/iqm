@@ -7,8 +7,8 @@ function disp_2d(it, X, A, W, var)
 % var: variance per centroid
 
 K = size(W,2);        % # of centroids
-a = find(A <= K);     % assigned points
-u = find(A > K);      % unassigned points
+a = find(A < K);      % assigned points
+u = find(A == K);     % unassigned points
 
 % axes
 clf

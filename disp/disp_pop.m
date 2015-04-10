@@ -1,10 +1,10 @@
-function disp_pop(it, f)
+function disp_pop(it, p)
 
 % it: iteration
-% f: centroid population
+% p: centroid population
 
-K = length(f);
-hist(f, K/10);
+K = length(p);
+hist(single(p), K/10);
 title(['iteration ' num2str(it-1) ', ' num2str(K) ' clusters']);
 xlabel('cluster population (cells/cluster)')
 ylabel('# of clusters')
