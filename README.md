@@ -24,7 +24,7 @@ Directory structure
 Requirements
 ------------
 
-`ikm` requires Matlab and [yael](http://yael.gforge.inria.fr/) library.
+`ikm` requires Matlab, an appropriate C++ compiler to compile `mex` files (e.g. `gcc`) and [yael](http://yael.gforge.inria.fr/) library.
 
 Setup
 -----
@@ -35,4 +35,4 @@ After installing yael, choose a location on disk, say `HOME`, where to store dat
 
 `ikm` uses the specific filenames and file formats as given [here](http://corpus-texmex.irisa.fr/). A number of additional folders for output will be created automatically under `HOME/sift/`.
 
-Finally, edit [/config/config.m](/config/config.m) and adjust the location of `yael` and `HOME` to your local settings. Now you can try any of the samples under [/test/](/test/)
+Finally, edit [/config/config.m](/config/config.m) and adjust the location of `yael` and `HOME` to your local settings. Now you can try any of the samples under [/test/](/test/). The `mex` files should compile automatically.
