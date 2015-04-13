@@ -21,7 +21,6 @@ compile('../lib/alias_setup')
 compile('../lib/alias_draw')
 compile('../sub/search_lu')
 compile('../sub/search_seq')
-compile('../sub/search_pseq')
 compile('../sub/ikm_iter')
 
 % dataset location
