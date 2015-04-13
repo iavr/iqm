@@ -61,7 +61,7 @@ xsave(cfg.pop, P);
 xsave(cfg.mean, M);
 xsave(cfg.idx, I);
 save(cfg.inv, 'cI');
-
+%
 %--------------------------------
 fprintf('Initializing\n');
 G = xload(cfg.grid);

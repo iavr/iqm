@@ -17,10 +17,12 @@ addpath(yael);
 addpath('../lib', '../util', '../disp', '../config', '../sub', '../quant');
 
 % compile mex files
+compile('../lib/alias_setup')
+compile('../lib/alias_draw')
 compile('../sub/search_lu')
 compile('../sub/search_seq')
 compile('../sub/search_pseq')
-compile('../sub/ikm_iter', true)
+compile('../sub/ikm_iter')
 
 % dataset location
 cfg.home  = home;
@@ -44,7 +46,7 @@ otherwise
 end
 
 % generate (and save) dataset?
-if cfg.gen
+if isfield(cfg, 'gen') && cfg.gen
 	cfg = gen(cfg);
 end
 

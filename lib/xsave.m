@@ -4,7 +4,7 @@ function xsave(name, a)
 % name: file name
 % a: array to save
 
-t = types(ext(name));
+t = type_info(file_ext(name));
 if isempty(t), save_ext(name, a, false); return, end
 
 f = fopen(name, 'wb');

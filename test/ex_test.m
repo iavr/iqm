@@ -9,22 +9,22 @@ cfg.r = 1000;  % max recall
 cfg.dataset = 'sift';
 cfg = ex_config(cfg);
 
-%--------------------------------
-fprintf('Learning codebooks\n');
-X = xload(cfg.learn);
-u = cputime;
-B = ex_learn(cfg, X);
-fprintf('Learn time: %.3fs\n', cputime - u);
-xsave(cfg.book, B);
-
-%--------------------------------
-fprintf('Encoding vectors\n');
-B = xload(cfg.book);
-X = xload(cfg.base);
-u = cputime;
-E = ex_encode(cfg, B, X);
-fprintf('Encode time: %.3fs\n', cputime - u);
-xsave(cfg.code, E);
+%  %--------------------------------
+%  fprintf('Learning codebooks\n');
+%  X = xload(cfg.learn);
+%  u = cputime;
+%  B = ex_learn(cfg, X);
+%  fprintf('Learn time: %.3fs\n', cputime - u);
+%  xsave(cfg.book, B);
+%
+%  %--------------------------------
+%  fprintf('Encoding vectors\n');
+%  B = xload(cfg.book);
+%  X = xload(cfg.base);
+%  u = cputime;
+%  E = ex_encode(cfg, B, X);
+%  fprintf('Encode time: %.3fs\n', cputime - u);
+%  xsave(cfg.code, E);
 
 %--------------------------------
 fprintf('Querying');

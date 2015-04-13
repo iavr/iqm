@@ -7,7 +7,7 @@ function a = xload(name, rng)
 
 if nargin < 2, rng = []; end
 
-[t, s] = types(ext(name));
+[t, s] = type_info(file_ext(name));
 if isempty(t), a = load_ext(name, 1, rng, false); return, end
 
 f = fopen(name, 'rb');

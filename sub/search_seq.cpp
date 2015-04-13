@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <queue>
 #include "mex.h"
 

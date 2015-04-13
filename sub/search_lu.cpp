@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "mex.h"
 
 void mexFunction(int nlhs, mxArray *plhs[],

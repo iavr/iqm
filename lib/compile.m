@@ -3,7 +3,7 @@ function compile(name, force)
 
 if nargin < 2, force = false; end
 
-[dir, file] = splitpath(name);
+[dir, file] = split_path(name);
 if exist(file) ~= 3 || force
 	eval(['mex -outdir ' dir ' ' name '.cpp'])
 end
