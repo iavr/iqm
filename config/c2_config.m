@@ -6,7 +6,6 @@ K = cfg.K;
 c = cfg.c;
 m = cfg.m;
 k = cfg.k;
-cfg.t  = uint32(cfg.t);
 cfg.cn = uint32(cfg.cn);
 cfg.o  = single(cfg.o);
 

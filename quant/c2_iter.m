@@ -13,18 +13,19 @@ function [W,A] = c2_iter(cfg, W, G, B, E, P, Mi, M, X, C)
 
 if nargin < 8, X = []; end
 
-K = cfg.K;                                        % # of centroids
-c = cfg.c;                                        % # of cells
-w = cfg.w;                                        % search window
-null = intmax('uint32');                          % invalid index
-p = ones (1, K, 'uint32');                        % centroid population
-s = zeros(1, K, 'single');                        % centroid variance
-A = ones (c, c, 'uint32') * null;                 % cell assignment; K=unassigned
-Z = inf  (c, c, 'single');                        % distance^2 to nearest centroid
-U = zeros(w, w, 'uint32');                        % search block buffer
-V = zeros(c, c, 'uint8');                         % visited status per cell
-Q = ones (c, c, 'uint32') * null;                 % quantized centroid per cell
-C = int_dec(int_pack(C, c));                      % cell position per point
+K = cfg.K;                                 % # of centroids
+c = cfg.c;                                 % # of cells
+w = cfg.w;                                 % search window
+null = intmax('uint32');                   % invalid index
+p = ones (1, K, 'uint32');                 % centroid population
+s = zeros(1, K, 'single');                 % centroid variance
+A = ones (c, c, 'uint32') * null;          % cell assignment; K=unassigned
+Z = inf  (c, c, 'single');                 % distance^2 to nearest centroid
+U = zeros(w, w, 'uint32');                 % search block buffer
+V = zeros(c, c, 'uint8');                  % visited status per cell
+Q = ones (c, c, 'uint32') * null;          % quantized centroid per cell
+C = int_dec(int_pack(C, c));               % cell position per point
+T = uint32(cfg.t * sum(P(:)) / K);         % search target (# of points x N/K)
 
 % main iteration
 for n = 1:cfg.it
@@ -47,6 +48,6 @@ for n = 1:cfg.it
 	[I, S] = nn_sub(G, W, 2, w);
 
 	% ikm iteration - assignment by search + update + purge
-	ikm_auto(p, W, s, I-1, S, P, Mi-1, M, A, Z, U, V, Q, cfg.t, cfg.cn, cfg.o);
+	ikm_auto(p, W, s, I-1, S, P, Mi-1, M, A, Z, U, V, Q, T, cfg.cn, cfg.o);
 
 end

@@ -44,7 +44,7 @@ void search(
 		cell::init(S, S + w, w);
 		v.init(I, I + w);
 		f.init(k);
-		t.init();
+		t.init(k);
 		queue q;                                  // queue holding propagation front
 		q.push(cell(0, 0));                       // start from top-left cell
 		int u1, u2, w1 = w - 1;
@@ -95,7 +95,7 @@ struct term
 	unsigned t, p;
 	unsigned const *P;
 	term(unsigned t, unsigned const *P) : t(t), P(P) {}
-	INLINE void init() { p = 0; }
+	INLINE void init(unsigned k) { p = 0; }
 	INLINE bool operator()(unsigned i) { p += P[i]; return p >= t; }
 };
 
@@ -104,13 +104,14 @@ struct term
 
 struct cell_nn
 {
-	unsigned *A;
+	unsigned *p, *A;
 	float *Z;
-	cell_nn(unsigned *A, float *Z) : A(A), Z(Z) {}
-	INLINE void init(unsigned k) { }
+	cell_nn(unsigned *p, unsigned *A, float *Z) : p(p), A(A), Z(Z) {}
+	INLINE void init(unsigned k) {}
 	INLINE void operator()(unsigned k, unsigned i, float d)
 	{
 		// set centroid k as nearest neighbor of cell i
-		if(d < Z[i]) { A[i] = k; Z[i] = d; }
+		// if lower distance found, or assigned centroid is purged
+		if(d < Z[i] || !p[A[i]]) { A[i] = k; Z[i] = d; }
 	}
 };

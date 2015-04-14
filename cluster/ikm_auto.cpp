@@ -26,7 +26,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	              *aV  = prhs[11], // c x c     visited cells
 	              *aQ  = prhs[12], // c x c     quantized centroid per cell
 	              *aT  = prhs[13], // scalar    target population
-	              *aR  = prhs[14], // scalar    # of centroid neighbors
+	              *aCn = prhs[14], // 1 x 2     # of centroid neighbors (min, max)
 	              *aO  = prhs[15]; // scalar    overlap threshold
 
 	int K  = mxGetN(ap),          // # of centroids
@@ -78,6 +78,9 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	if(mxGetM(aQ) != c || mxGetN(aQ) != c)
 		mexErrMsgTxt("Dimensions of argument 13 invalid.");
 
+	if(mxGetM(aCn) != 1 || mxGetN(aCn) != 2)
+		mexErrMsgTxt("Dimensions of argument 15 invalid.");
+
 	if(mxGetClassID(ap) != mxUINT32_CLASS)
 		mexErrMsgTxt("Argument 1 should be of type uint32.");
 
@@ -120,7 +123,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	if(mxGetClassID(aT) != mxUINT32_CLASS)
 		mexErrMsgTxt("Argument 14 should be of type uint32.");
 
-	if(mxGetClassID(aR) != mxUINT32_CLASS)
+	if(mxGetClassID(aCn) != mxUINT32_CLASS)
 		mexErrMsgTxt("Argument 15 should be of type uint32.");
 
 	if(mxGetClassID(aO) != mxSINGLE_CLASS)
@@ -142,19 +145,31 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	unsigned char *V  = (unsigned char*) mxGetPr(aV);      // visited cells
 	unsigned      *Q  = (unsigned*)      mxGetPr(aQ);      // quantized centroid/cell
 	unsigned       t  = (unsigned)       mxGetScalar(aT);  // target population
-	unsigned       r  = (unsigned)       mxGetScalar(aR);  // # of centroid neighbors
+	unsigned      *cn = (unsigned*)      mxGetPr(aCn);     // # of centroid neighbors
 	float          o  = (float)          mxGetScalar(aO);  // overlap threshold
 
-	visit v(U, V, c);
-	term T(t, P);
-	search(K, w, p, I, S, v, T, cell_nn(A, Z));
-	update(K, D, c, ce, p, W, s, P, Mi, M, A, Z);
+	if(cn[0] > 1)
+	{
+		nhood N(cn[1], K);
+		joint_nn J(p, A, Z, N, Q);
+		quant_on(K, w, c, p, I, Q);
+		search(K, w, p, I, S, visit(U, V, c), cell_term(t, P, N, cn), J);
+		update(K, D, c, ce, p, W, s, P, Mi, M, A, Z);
+		if(o) purge(K, D, p, s, N, o);
+		quant_off(K, w, c, I, Q);
+	}
+	else
+	{
+		visit v(U, V, c);
+		term T(t, P);
+		search(K, w, p, I, S, v, T, cell_nn(p, A, Z));
+		update(K, D, c, ce, p, W, s, P, Mi, M, A, Z);
+		if(!cn[1] || !o) return;
 
-	if(!r || !o) return;
-
-	nhood N(r, K);
-	quant_on(K, w, c, p, I, Q);
-	search(K, w, p, I, S, v, T, cen_nn(N, Q));
-	quant_off(K, w, c, I, Q);
-	purge(K, D, p, s, N, o);
+		nhood N(cn[1], K);
+		quant_on(K, w, c, p, I, Q);
+		search(K, w, p, I, S, v, T, cen_nn(N, Q));
+		quant_off(K, w, c, I, Q);
+		purge(K, D, p, s, N, o);
+	}
 }

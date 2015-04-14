@@ -20,6 +20,21 @@ struct nhood
 };
 
 //-----------------------------------------------------------------------------
+// function object controlling termination, depending on nearest centroids
+
+struct cell_term : term
+{
+	unsigned k;
+	nhood const &N;
+	unsigned *cn;
+	cell_term(unsigned t, unsigned const *P, nhood const &N, unsigned *cn)
+		: term(t, P), N(N), cn(cn) {}
+	INLINE void init(unsigned _k) { term::init(k = _k); }
+	INLINE bool operator()(unsigned i)
+		{ return term::operator()(i) && N.len[k] > cn[0] || N.len[k] >= cn[1]; }
+};
+
+//-----------------------------------------------------------------------------
 // function object recording nearest centroids of each centroid.
 
 struct cen_nn
@@ -33,6 +48,21 @@ struct cen_nn
 	{
 		unsigned l = Q[i];
 		if(l < K) N.insert(k, l, d);
+	}
+};
+
+//-----------------------------------------------------------------------------
+// function object combining cell_nn and cen_nn
+
+struct joint_nn : cell_nn, cen_nn
+{
+	joint_nn(unsigned *p, unsigned *A, float *Z, nhood &N, unsigned const *Q)
+		: cell_nn(p, A, Z), cen_nn(N, Q) {}
+	INLINE void init(unsigned k) { cell_nn::init(k); cen_nn::init(k); }
+	INLINE void operator()(unsigned k, unsigned i, float d)
+	{
+		cell_nn::operator()(k, i, d);
+		cen_nn ::operator()(k, i, d);
 	}
 };
 

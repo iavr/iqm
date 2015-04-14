@@ -125,6 +125,6 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	unsigned char *V  = (unsigned char*) mxGetPr(aV);      // visited cells
 	unsigned       t  = (unsigned)       mxGetScalar(aT);  // target population
 
-	search(K, w, p, I, S, visit(U, V, c), term(t, P), cell_nn(A, Z));
+	search(K, w, p, I, S, visit(U, V, c), term(t, P), cell_nn(p, A, Z));
 	update(K, D, c, ce, p, W, s, P, Mi, M, A, Z);
 }
