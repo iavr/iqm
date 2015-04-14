@@ -12,7 +12,7 @@ struct popular
 //-----------------------------------------------------------------------------
 // purge step
 
-void purge(int K, int D, unsigned *p, float const *s, nhood &N)
+void purge(int K, int D, unsigned *p, float const *s, nhood &N, float o)
 {
 	vector<float> e(N.n);
 	vector<unsigned> rk(K), ord(K);
@@ -38,6 +38,6 @@ void purge(int K, int D, unsigned *p, float const *s, nhood &N)
 			if(!p[j = i[n]] || rk[j] > rk[k]) continue;
 			t += e[n] = p[j] * std::exp((m - e[n]) / 2);
 		}
-		if(e[0] < .0 * t) p[k] = 0;  // TODO: tau
+		if(e[0] < std::pow(o, D/2) * t) p[k] = 0;
 	}
 }

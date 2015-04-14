@@ -22,7 +22,7 @@ compile('../lib/alias_setup')
 compile('../lib/alias_draw')
 compile('../sub/search_lu')
 compile('../sub/search_seq')
-compile('../cluster/ikm_base', true)
+compile('../cluster/ikm_base')
 compile('../cluster/ikm_auto', true)
 
 % dataset location

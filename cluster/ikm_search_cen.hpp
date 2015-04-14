@@ -40,10 +40,7 @@ struct cen_nn
 // quantize each centroid on grid. if two centroids collide, the most
 // populated one wins and the other is purged.
 
-void quantize(
-	int K, int w, int c, unsigned *p,
-	unsigned const *I, unsigned *Q
-)
+void quant_on(int K, int w, int c, unsigned *p, unsigned const *I, unsigned *Q)
 {
 	for(int k = 0, w2 = 2 * w; k < K; ++k, I += w2)
 	{
@@ -61,9 +58,7 @@ void quantize(
 //-----------------------------------------------------------------------------
 // clear grid from quantized centroids, so it can be used at next iteration.
 
-void unquantize(
-	int K, int w, int c, unsigned const *I, unsigned *Q
-)
+void quant_off(int K, int w, int c, unsigned const *I, unsigned *Q)
 {
 	for(int k = 0, w2 = 2 * w; k < K; ++k, I += w2)
 		Q[I[0] + c * I[w]] = K;
