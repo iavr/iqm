@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// structure managing nearest centroids of each centroid
+// structure managing nearest centroids of each centroid.
 
 struct nhood
 {
@@ -20,7 +20,7 @@ struct nhood
 };
 
 //-----------------------------------------------------------------------------
-// function object recording nearest centroids of each centroid
+// function object recording nearest centroids of each centroid.
 
 struct cen_nn
 {
@@ -37,6 +37,8 @@ struct cen_nn
 };
 
 //-----------------------------------------------------------------------------
+// quantize each centroid on grid. if two centroids collide, the most
+// populated one wins and the other is purged.
 
 void quantize(
 	int K, int w, int c, unsigned *p,
@@ -57,6 +59,7 @@ void quantize(
 }
 
 //-----------------------------------------------------------------------------
+// clear grid from quantized centroids, so it can be used at next iteration.
 
 void unquantize(
 	int K, int w, int c, unsigned const *I, unsigned *Q
