@@ -1,11 +1,10 @@
 #include "mex.h"
 #include "mex.hpp"
-#include <cmath>
 
 //-----------------------------------------------------------------------------
 // Alias method - O(N) sampling.
-// See Devroye 1986 - Non-Uniform Random Variate Generation
-// http://luc.devroye.org/rnbookindex.html
+// See Devroye 1986 - Non-Uniform Random Variate Generation.
+// [http://luc.devroye.org/rnbookindex.html]
 // Attached "alias.pdf" containing p. 107-109 of the book.
 
 // K: number of outcomes

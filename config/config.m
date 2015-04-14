@@ -14,14 +14,16 @@ end
 
 % matlab path
 addpath(yael);
-addpath('../lib', '../util', '../disp', '../config', '../sub', '../quant');
+addpath('../lib', '../util', '../disp', '../config');
+addpath('../sub', '../quant', '../cluster');
 
 % compile mex files
 compile('../lib/alias_setup')
 compile('../lib/alias_draw')
 compile('../sub/search_lu')
 compile('../sub/search_seq')
-compile('../sub/ikm_iter')
+compile('../cluster/ikm_base', true)
+compile('../cluster/ikm_auto', true)
 
 % dataset location
 cfg.home  = home;

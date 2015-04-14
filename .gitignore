@@ -1,9 +1,9 @@
 anim/*.pdf
+cluster/ikm_auto.mexa64
+cluster/ikm_base.mexa64
 .gitignore_src
 .ignore
 lib/alias_draw.mexa64
 lib/alias_setup.mexa64
-sub/ikm_iter.mexa64
 sub/search_lu.mexa64
-sub/search_pseq.mexa64
 sub/search_seq.mexa64

@@ -8,7 +8,7 @@ function disp_2d(it, X, A, W, var)
 
 K = size(W,2);        % # of centroids
 a = find(A < K);      % assigned points
-u = find(A == K);     % unassigned points
+u = find(A >= K);     % unassigned points
 
 % axes
 clf
