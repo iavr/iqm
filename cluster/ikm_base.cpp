@@ -16,7 +16,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	              *aI  = prhs[3],  // 2w x K    cell sub-indices
 	              *aS  = prhs[4],  // 2w x K    sub-distances
 	              *aP  = prhs[5],  // c x c     cell populations
-	              *aMi = prhs[6],  // 1 x c^2   cell means index
+	              *aMi = prhs[6],  // c x c     cell means index
 	              *aM  = prhs[7],  // D x ce    cell means
 	              *aA  = prhs[8],  // c x c     cell assignment
 	              *aZ  = prhs[9],  // c x c     distance^2 to centroid
@@ -52,7 +52,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	if(mxGetN(aP) != c)
 		mexErrMsgTxt("Dimensions of argument 6 not consistent.");
 
-	if(mxGetM(aMi) != 1 || mxGetN(aMi) != c*c)
+	if(mxGetM(aMi) != c || mxGetN(aMi) != c)
 		mexErrMsgTxt("Dimensions of argument 7 invalid.");
 
 	if(mxGetM(aM) != D)

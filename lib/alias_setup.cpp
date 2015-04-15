@@ -3,10 +3,12 @@
 
 //-----------------------------------------------------------------------------
 // Alias method - O(K) table setup.
-// See Devroye 1986 - Non-Uniform Random Variate Generation.
+// See Devroye 1986, Non-Uniform Random Variate Generation.
 // [http://luc.devroye.org/rnbookindex.html]
 // Attached "alias.pdf" containing p. 107-109 of the book.
 
+// F: floating point type
+// I: integral type
 // K: number of outcomes
 // Q: output alias probabilities
 // J: output alias table
@@ -50,6 +52,9 @@ void alias_setup(int K, F *Q, I *J, F const *P)
 }
 
 //-----------------------------------------------------------------------------
+// mex entry point templated on types
+// F: floating point type
+// I: integral type
 
 template<typename F, typename I>
 void mex(int nlhs, mxArray *plhs[],
@@ -58,9 +63,9 @@ void mex(int nlhs, mxArray *plhs[],
 	if (nrhs != 1)  mexErrMsgTxt("Needs 1 input arguments");
 	if (nlhs != 2)  mexErrMsgTxt("Needs 2 output arguments");
 
-	mxArray      *&aQ = plhs[0],  // 1 x K
-	             *&aJ = plhs[1];  // 1 x K
-	mxArray const *aP = prhs[0];  // m x n (K = m*n)
+	mxArray      *&aQ = plhs[0],  // 1 x K            output alias probabilities
+	             *&aJ = plhs[1];  // 1 x K            output alias table
+	mxArray const *aP = prhs[0];  // m x n (K = m*n)  input probability distribution
 
 	int m = mxGetM(aP),
 	    n = mxGetN(aP),
@@ -80,6 +85,7 @@ void mex(int nlhs, mxArray *plhs[],
 }
 
 //-----------------------------------------------------------------------------
+// mex entry point -- choose types
 
 void mexFunction(int nlhs, mxArray *plhs[],
                  int nrhs, mxArray const *prhs[])

@@ -2,14 +2,14 @@ function disp_2d(it, X, A, p, W, var)
 
 % it: iteration
 % X: input data points
-% A: centroid assignment per point
+% A: centroid assignment per point (one-based)
 % p: population per centroid
 % W: centroids (mean vector per centroid)
 % var: variance per centroid
 
 K = size(W,2);        % # of centroids
-a = find(A < K);      % assigned points
-u = find(A >= K);     % unassigned points
+a = find(A <= K);     % assigned points
+u = find(A > K);      % unassigned points
 f = find(p);          % non-empty centroids
 
 % axes

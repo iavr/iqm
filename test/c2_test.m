@@ -23,39 +23,39 @@ cfg.K  = 24;        % # of clusters
 cfg.c  = 64;        % # of cells
 cfg.m  = 2;         % # of subspaces      (unused currently)
 cfg.k  = 16;        % fine codebook size  (unused currently)
-cfg.w  = 20;        % search window
+cfg.w  = 24;        % search window
 cfg.rr = 16;        % centroid rerank     (unused currently)
-cfg.t  = 2.5;       % search target (# of points x N/K)
+cfg.t  = 2;         % search target (# of points x N/K)
 cfg.cn = [4 10];    % # of centroid neighbors
 cfg.o  = .6;        % overlap threshold
 %
 %  cfg.dataset = '2d_uni';
 cfg.dataset = '2d_gm';
-cfg.gen = true;
+cfg.gen = false;
 cfg.verbose = 2;
 
 %--------------------------------
 cfg = c2_config(cfg);
 
-%--------------------------------
-fprintf('Learning codebooks\n');
-X = xload(cfg.learn);
-u = cputime;
-[G,B] = c2_learn(cfg, X);
-fprintf('Learn time: %.3fs\n', cputime - u);
-xsave(cfg.grid, G);
-xsave(cfg.book, B);
-
-%--------------------------------
-fprintf('Encoding vectors & codebooks\n');
-G = xload(cfg.grid);
-B = xload(cfg.book);
-X = xload(cfg.base);
-u = cputime;
-[C,E] = c2_encode(cfg, G, B, X);
-fprintf('Encode time: %.3fs\n', cputime - u);
-xsave(cfg.cell, C);
-xsave(cfg.code, E);
+%  %--------------------------------
+%  fprintf('Learning codebooks\n');
+%  X = xload(cfg.learn);
+%  u = cputime;
+%  [G,B] = c2_learn(cfg, X);
+%  fprintf('Learn time: %.3fs\n', cputime - u);
+%  xsave(cfg.grid, G);
+%  xsave(cfg.book, B);
+%
+%  %--------------------------------
+%  fprintf('Encoding vectors & codebooks\n');
+%  G = xload(cfg.grid);
+%  B = xload(cfg.book);
+%  X = xload(cfg.base);
+%  u = cputime;
+%  [C,E] = c2_encode(cfg, G, B, X);
+%  fprintf('Encode time: %.3fs\n', cputime - u);
+%  xsave(cfg.cell, C);
+%  xsave(cfg.code, E);
 
 %--------------------------------
 fprintf('Inverting\n');

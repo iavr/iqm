@@ -3,10 +3,12 @@
 
 //-----------------------------------------------------------------------------
 // Alias method - O(N) sampling.
-// See Devroye 1986 - Non-Uniform Random Variate Generation.
+// See Devroye 1986, Non-Uniform Random Variate Generation.
 // [http://luc.devroye.org/rnbookindex.html]
 // Attached "alias.pdf" containing p. 107-109 of the book.
 
+// F: floating point type
+// I: integral type
 // K: number of outcomes
 // N: number of samples
 // X: output samples
@@ -33,6 +35,9 @@ void alias_draw(
 }
 
 //-----------------------------------------------------------------------------
+// mex entry point templated on types
+// F: floating point type
+// I: integral type
 
 template<typename F, typename I>
 void mex(int nlhs, mxArray *plhs[],
@@ -41,11 +46,11 @@ void mex(int nlhs, mxArray *plhs[],
 	if (nrhs != 4)  mexErrMsgTxt("Needs 4 input arguments");
 	if (nlhs != 1)  mexErrMsgTxt("Needs 1 output arguments");
 
-	mxArray      *&aX = plhs[0];  // 1 x N
-	mxArray const *aQ = prhs[0],  // 1 x K
-	              *aJ = prhs[1],  // 1 x K
-	              *aR = prhs[2],  // 1 x N
-	              *aV = prhs[3];  // 1 x N
+	mxArray      *&aX = plhs[0];  // 1 x N   output samples
+	mxArray const *aQ = prhs[0],  // 1 x K   input alias probabilities
+	              *aJ = prhs[1],  // 1 x K   input alias table
+	              *aR = prhs[2],  // 1 x N   input uniform sample 1
+	              *aV = prhs[3];  // 1 x N   input uniform sample 2
 
 	int K = mxGetN(aQ),     // number of outcomes
 	    N = mxGetN(aR);     // number of samples
@@ -86,6 +91,7 @@ void mex(int nlhs, mxArray *plhs[],
 }
 
 //-----------------------------------------------------------------------------
+// mex entry point -- choose types
 
 void mexFunction(int nlhs, mxArray *plhs[],
                  int nrhs, mxArray const *prhs[])
