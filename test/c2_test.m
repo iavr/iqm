@@ -31,31 +31,31 @@ cfg.o  = .6;        % overlap threshold
 %
 %  cfg.dataset = '2d_uni';
 cfg.dataset = '2d_gm';
-cfg.gen = false;
+cfg.gen = true;
 cfg.verbose = 2;
 
 %--------------------------------
 cfg = c2_config(cfg);
 
-%  %--------------------------------
-%  fprintf('Learning codebooks\n');
-%  X = xload(cfg.learn);
-%  u = cputime;
-%  [G,B] = c2_learn(cfg, X);
-%  fprintf('Learn time: %.3fs\n', cputime - u);
-%  xsave(cfg.grid, G);
-%  xsave(cfg.book, B);
+%--------------------------------
+fprintf('Learning codebooks\n');
+X = xload(cfg.learn);
+u = cputime;
+[G,B] = c2_learn(cfg, X);
+fprintf('Learn time: %.3fs\n', cputime - u);
+xsave(cfg.grid, G);
+xsave(cfg.book, B);
 %
-%  %--------------------------------
-%  fprintf('Encoding vectors & codebooks\n');
-%  G = xload(cfg.grid);
-%  B = xload(cfg.book);
-%  X = xload(cfg.base);
-%  u = cputime;
-%  [C,E] = c2_encode(cfg, G, B, X);
-%  fprintf('Encode time: %.3fs\n', cputime - u);
-%  xsave(cfg.cell, C);
-%  xsave(cfg.code, E);
+%--------------------------------
+fprintf('Encoding vectors & codebooks\n');
+G = xload(cfg.grid);
+B = xload(cfg.book);
+X = xload(cfg.base);
+u = cputime;
+[C,E] = c2_encode(cfg, G, B, X);
+fprintf('Encode time: %.3fs\n', cputime - u);
+xsave(cfg.cell, C);
+xsave(cfg.code, E);
 
 %--------------------------------
 fprintf('Inverting\n');
