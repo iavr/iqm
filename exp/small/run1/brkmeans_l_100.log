@@ -1,0 +1,46 @@
+Initializing centers
+Centers initialized. Computing original scores..
+Creating flann index
+Flann index created
+Initial cluster score:
+	KMeans objective score: 7.58666e+09
+Iteration #1:
+	KMeans objective score: 5.48231e+09
+	Percentage of assigned points 0.61551
+	Total time: 0.255264s, update time: 0.055412s, assign time: 0.199852s
+Iteration #2:
+	KMeans objective score: 5.41579e+09
+	Percentage of assigned points 0.57111
+	Total time: 0.235064s, update time: 0.0476535s, assign time: 0.187411s
+Iteration #3:
+	KMeans objective score: 5.3976e+09
+	Percentage of assigned points 0.56641
+	Total time: 0.232294s, update time: 0.0491686s, assign time: 0.183125s
+Iteration #4:
+	KMeans objective score: 5.3943e+09
+	Percentage of assigned points 0.56305
+	Total time: 0.233988s, update time: 0.046664s, assign time: 0.187324s
+Iteration #5:
+	KMeans objective score: 5.39309e+09
+	Percentage of assigned points 0.56123
+	Total time: 0.231129s, update time: 0.048727s, assign time: 0.182402s
+Iteration #6:
+	KMeans objective score: 5.39232e+09
+	Percentage of assigned points 0.56005
+	Total time: 0.231698s, update time: 0.0486395s, assign time: 0.183059s
+Iteration #7:
+	KMeans objective score: 5.3937e+09
+	Percentage of assigned points 0.55721
+	Total time: 0.232872s, update time: 0.0490521s, assign time: 0.18382s
+Iteration #8:
+	KMeans objective score: 5.39393e+09
+	Percentage of assigned points 0.55729
+	Total time: 0.287101s, update time: 0.078134s, assign time: 0.208967s
+Iteration #9:
+	KMeans objective score: 5.39384e+09
+	Percentage of assigned points 0.55849
+	Total time: 0.237241s, update time: 0.0475905s, assign time: 0.18965s
+Iteration #10:
+	KMeans objective score: 5.39385e+09
+	Percentage of assigned points 0.55726
+	Total time: 0.22995s, update time: 0.0488374s, assign time: 0.181113s

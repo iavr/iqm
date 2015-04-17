@@ -7,20 +7,27 @@
 
 class Kmeans {
 public:
-	Kmeans(std::string dataFilename);
-	void runAlgorithm(unsigned long k, int l, int maxIter=100, bool verbose=false);
+	Kmeans(std::string dataFilename, unsigned long k, int l, int maxIter=100, bool verbose=false);
+	void runAlgorithm();
+	void initializeRandomly();
+	void initializeExplicitly(dmatrix& initialCenters);
 	virtual void assignStep(flann::Index<flann::L2<float> >& index, dmatrix& centers);
+	void assignStep();
+	void postInitialization();
 	double computeScore(dmatrix& centers);
-	double silhouette(dmatrix& centers);
+	double silhouette();
 
 	dmatrix dataset;
+	dmatrix centers;
+	uvector labels; 
 	unsigned long numOfVecs;
 	int dimension;
 	umatrix assignments;
 	unsigned long k;
 	int l;
+	int maxIter;
+	bool verbose;
 	dvector distances;
-	uvector nearestCluster;
 };
 
 #endif

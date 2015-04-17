@@ -1,0 +1,35 @@
+Initializing centers
+Centers initialized. Computing original scores..
+Initial centroids score:
+	KMeans objective score: 7.58666e+09
+Starting main Loop
+Iteration #1:
+	KMeans objective score: 5.52454e+09
+	Total time: 198.951s, update time: 0.0856715s, assign time: 198.865s
+Iteration #2:
+	KMeans objective score: 5.20525e+09
+	Total time: 209.354s, update time: 0.084114s, assign time: 209.27s
+Iteration #3:
+	KMeans objective score: 5.11645e+09
+	Total time: 200.069s, update time: 0.0805552s, assign time: 199.988s
+Iteration #4:
+	KMeans objective score: 5.07318e+09
+	Total time: 193.994s, update time: 0.0788385s, assign time: 193.915s
+Iteration #5:
+	KMeans objective score: 5.04708e+09
+	Total time: 197.399s, update time: 0.0828435s, assign time: 197.316s
+Iteration #6:
+	KMeans objective score: 5.03e+09
+	Total time: 200.027s, update time: 0.139928s, assign time: 199.887s
+Iteration #7:
+	KMeans objective score: 5.01797e+09
+	Total time: 197.005s, update time: 0.0821059s, assign time: 196.923s
+Iteration #8:
+	KMeans objective score: 5.00868e+09
+	Total time: 220.625s, update time: 0.0836766s, assign time: 220.541s
+Iteration #9:
+	KMeans objective score: 5.0012e+09
+	Total time: 221.64s, update time: 0.0834401s, assign time: 221.557s
+Iteration #10:
+	KMeans objective score: 4.99531e+09
+	Total time: 219.954s, update time: 0.0789513s, assign time: 219.875s
