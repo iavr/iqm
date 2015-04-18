@@ -11,7 +11,7 @@ public:
 	void runAlgorithm();
 	void initializeRandomly();
 	void initializeExplicitly(dmatrix& initialCenters);
-	virtual void assignStep(flann::Index<flann::L2<float> >& index, dmatrix& centers);
+	void assignStep(flann::Index<flann::L2<float> >& index, dmatrix& centers);
 	void assignStep();
 	void postInitialization();
 	double computeScore(dmatrix& centers);

@@ -8,7 +8,7 @@
 using namespace std;
 
 Kmeans::Kmeans(string dataFilename, unsigned long k, int l, int maxIter, bool verbose) {
-	Reader::readFvecs(dataFilename, this->dataset);
+	Reader::readVector(dataFilename, this->dataset);
 	numOfVecs = dataset.size();
 	dimension = dataset[0].size();
 	this->k = k;
@@ -27,9 +27,6 @@ void Kmeans::initializeRandomly() {
 	std::uniform_int_distribution<int> distribution(0, numOfVecs-1);
 	default_random_engine generator;
 	set<int> initialCentersIds;
-
-	assignments.clear();
-	assignments.reserve(k);
 
 	int currentIndex = 0;
 	while (initialCentersIds.size()<k) {
@@ -66,7 +63,6 @@ void Kmeans::runAlgorithm() {
 	/** Initialization
 	 */
 	chrono::high_resolution_clock::time_point t1, t2; 
-	t1 = chrono::high_resolution_clock::now();
 	flann::Matrix<float> fDataset(new float[numOfVecs*dimension], numOfVecs, dimension);
 	for (unsigned long i=0; i<numOfVecs; i++) {
 		for (int j=0; j<dimension; j++) {
@@ -74,11 +70,12 @@ void Kmeans::runAlgorithm() {
 		}
 	}
 	cout << "Creating flann index" << endl;
+	t1 = chrono::high_resolution_clock::now();
 	flann::Index<flann::L2<float> > index(fDataset, flann::KDTreeIndexParams(10));
 	index.buildIndex();
 	t2 = chrono::high_resolution_clock::now();
 	chrono::duration<double> flannTime = chrono::duration_cast<chrono::duration<double>>(t2 - t1);
-	cout << "Flann index created. Took "<< flannTime.count() << "s" << endl;
+	cout << "Flann index created. Took: "<< flannTime.count() << "s" << endl;
 	if (verbose) {
 //		assignStep(index, centers);
 //		unsigned long total = 0;
@@ -115,18 +112,15 @@ void Kmeans::runAlgorithm() {
 
 	/** Main Loop
 	 */
+	t1 = chrono::high_resolution_clock::now();
 	for (int iter=0; iter<maxIter; iter++) {
 		cout << "Iter #" << (iter+1) << endl;
 		/** Assign Step
 		 */
-		t1 = chrono::high_resolution_clock::now();
 		assignStep(index, centers); 
-		t2 = chrono::high_resolution_clock::now();
-		chrono::duration<double> assignTime = chrono::duration_cast<chrono::duration<double>>(t2 - t1);
 
 		/** Update Step
 		 */
-		t1 = chrono::high_resolution_clock::now();
 		centers.clear();
 		for (unsigned cluster=0; cluster<k; cluster++) {
 			dvector newCenter(dimension, 0);
@@ -136,8 +130,6 @@ void Kmeans::runAlgorithm() {
 			PLA::multiply(newCenter, 1.0/ assignments[cluster].size());
 			centers.push_back(newCenter);
 		}
-		t2 = chrono::high_resolution_clock::now();
-		chrono::duration<double> updateTime = chrono::duration_cast<chrono::duration<double>>(t2 - t1);
 
 		/** Compute Score
 		 */
@@ -172,9 +164,13 @@ void Kmeans::runAlgorithm() {
 			cout << "\tKMeans objective score: " << score << endl;
 			//cout << "\tSilhouetter score: " << sil << endl;
 			cout << "\tPercentage of assigned points " << (double) total/ numOfVecs << endl;//", per: " << (double) total2/ numOfVecs << endl;
-			cout <<	"\tTotal time: " << (assignTime.count() + updateTime.count()) << "s, update time: " << updateTime.count() << "s, assign time: " << assignTime.count() << "s" << endl;
+			//cout <<	"\tTotal time: " << (assignTime.count() + updateTime.count()) << "s, update time: " << updateTime.count() << "s, assign time: " << assignTime.count() << "s" << endl;
 		}
 	}
+	t2 = chrono::high_resolution_clock::now();
+	chrono::duration<double> loopTime = chrono::duration_cast<chrono::duration<double>>(t2 - t1);
+	cout << "Total iteration time: " << loopTime.count() << "s" << endl;
+	cout << "Total time: " << (loopTime.count() + flannTime.count()) << "s" << endl;
 }
 
 double Kmeans::computeScore(dmatrix& centers) {
@@ -245,6 +241,7 @@ void Kmeans::assignStep(flann::Index<flann::L2<float> >& index, dmatrix& centers
 				labels[indices[0][i]] = cluster;
 			}
 		}
+		delete query.ptr();
 	}
 	for (unsigned long i=0; i<numOfVecs; i++) {
 		if (distances[i]>-1) {
