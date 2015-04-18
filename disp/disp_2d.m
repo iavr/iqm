@@ -14,11 +14,13 @@ f = find(p);          % non-empty centroids
 
 % axes
 clf
-title(['iteration ' num2str(it-1) ', ' num2str(length(f)) ' non-empty clusters']);
+%  title(['iteration ' num2str(it-1) ', ' num2str(length(f)) ' non-empty clusters']);
 mx = max(X(:));
 mn = min(X(:));
+%  scatter([mn mx mx mn], [mn mn mx mx], 1e-9, '.w')
 axis([mn mx mn mx])
 axis square
+%  axis off
 hold on
 
 % points

@@ -7,4 +7,5 @@ function [C, E] = c2_encode(cfg, G, B, X)
 % X: input data points
 
 C = enc_sub(G, X, 2);
-E = ex_encode(cfg, B, G);
+%  E = ex_encode(cfg, B, G);
+E = [];

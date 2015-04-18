@@ -5,4 +5,5 @@ function [G, B] = c2_learn(cfg, X)
 % X: input data points
 
 G = learn_sub(cfg, X, 2, cfg.c);
-B = ex_learn(cfg, G);
+%  B = ex_learn(cfg, G);
+B = [];
