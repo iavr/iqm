@@ -1,4 +1,5 @@
 #include "br_kmeans.h"
+#include <ivl/ivl>
 #include <chrono>
 #include <sstream>
 #include <iostream>

@@ -8,6 +8,8 @@
 class Reader {
 public:
 	static void readFvecs(std::string filename, std::vector<std::vector<float> >& features);
+	static void readVector(std::string filename, std::vector<std::vector<float> >& features);
+
 };
 
 #endif
