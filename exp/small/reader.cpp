@@ -1,4 +1,5 @@
 #include "reader.h"
+#include "vector_io.hpp"
 
 using namespace std;
 
@@ -24,8 +25,6 @@ void Reader::readFvecs(string filename, vector<vector<float> >& features) {
 	in.close();
 }
 
-//int main() {
-//	string filename = "/home/user/sift/raw/sift_learn.fvecs";
-//	vector<vector<float> > features;
-//	readFvecs(filename, features);
-//}
+void Reader::readVector(std::string filename, std::vector<std::vector<float> >& features) {
+	load_double_array<float>(filename, features);
+}

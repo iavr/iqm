@@ -1,18 +1,18 @@
-#include "br_kmeans.h"
+#include "akm.h"
 #include <set>
 #include <random>
 #include <iostream>
 #include <chrono>
 #include <flann/flann.hpp>
+#include <flann/flann.h>
 
 using namespace std;
 
-Kmeans::Kmeans(string dataFilename, unsigned long k, int l, int maxIter, bool verbose) {
+Kmeans::Kmeans(string dataFilename, unsigned long k, int maxIter, bool verbose) {
 	Reader::readVector(dataFilename, this->dataset);
 	numOfVecs = dataset.size();
 	dimension = dataset[0].size();
 	this->k = k;
-	this->l = l;
 	this->maxIter = maxIter;
 	this->verbose = verbose;
 	centers.reserve(k);
@@ -63,19 +63,6 @@ void Kmeans::runAlgorithm() {
 	/** Initialization
 	 */
 	chrono::high_resolution_clock::time_point t1, t2; 
-	flann::Matrix<float> fDataset(new float[numOfVecs*dimension], numOfVecs, dimension);
-	for (unsigned long i=0; i<numOfVecs; i++) {
-		for (int j=0; j<dimension; j++) {
-			fDataset[i][j] = dataset[i][j];
-		}
-	}
-	cout << "Creating flann index" << endl;
-	t1 = chrono::high_resolution_clock::now();
-	flann::Index<flann::L2<float> > index(fDataset, flann::KDTreeIndexParams(10));
-	index.buildIndex();
-	t2 = chrono::high_resolution_clock::now();
-	chrono::duration<double> flannTime = chrono::duration_cast<chrono::duration<double>>(t2 - t1);
-	cout << "Flann index created. Took: "<< flannTime.count() << "s" << endl;
 	if (verbose) {
 //		assignStep(index, centers);
 //		unsigned long total = 0;
@@ -117,7 +104,7 @@ void Kmeans::runAlgorithm() {
 		cout << "Iter #" << (iter+1) << endl;
 		/** Assign Step
 		 */
-		assignStep(index, centers); 
+		assignStep(centers); 
 
 		/** Update Step
 		 */
@@ -170,7 +157,6 @@ void Kmeans::runAlgorithm() {
 	t2 = chrono::high_resolution_clock::now();
 	chrono::duration<double> loopTime = chrono::duration_cast<chrono::duration<double>>(t2 - t1);
 	cout << "Total iteration time: " << loopTime.count() << "s" << endl;
-	cout << "Total time: " << (loopTime.count() + flannTime.count()) << "s" << endl;
 }
 
 double Kmeans::computeScore(dmatrix& centers) {
@@ -216,7 +202,16 @@ double Kmeans::silhouette() {
 	return silScore / numOfVecs;
 }
 
-void Kmeans::assignStep(flann::Index<flann::L2<float> >& index, dmatrix& centers) {
+void Kmeans::assignStep(dmatrix& centers) {
+	flann::Matrix<float> fDataset(new float[k*dimension], k, dimension);
+	for (unsigned long i=0; i<k; i++) {
+		for (int j=0; j<dimension; j++) {
+			fDataset[i][j] = centers[i][j];
+		}
+	}
+	flann::KDTreeIndexParams params(10);
+	flann::Index<flann::L2<float> > index(fDataset, params);
+	index.buildIndex();
 	for (unsigned cluster=0; cluster<k; cluster++) {
 		assignments[cluster].clear();
 	}
@@ -228,28 +223,23 @@ void Kmeans::assignStep(flann::Index<flann::L2<float> >& index, dmatrix& centers
 
 	vector<vector<int> > indices;
 	dmatrix dists;
-	for (unsigned long cluster=0; cluster<k; cluster++) {
+	for (unsigned long i=0; i<numOfVecs; i++) {
 		flann::Matrix<float> query(new float[dimension], 1, dimension);
 		for (int dim=0; dim<dimension; dim++) {
-			query[0][dim] = centers[cluster][dim];
+			query[0][dim] = dataset[i][dim];
 		}	
-		int pointsFound = index.knnSearch(query, indices, dists, l, flann::SearchParams());
+		int pointsFound = index.knnSearch(query, indices, dists, 1, flann::SearchParams());
+		if (pointsFound==0) continue;
 
-		for (unsigned long i=0; i<indices[0].size(); i++) {
-			if (distances[indices[0][i]]==-1 || distances[indices[0][i]]>dists[0][i]) {
-				distances[indices[0][i]] = dists[0][i];
-				labels[indices[0][i]] = cluster;
-			}
-		}
+		distances[i] = dists[0][0];
+		labels[i] = indices[0][0];
+		assignments[indices[0][0]].push_back(i);
 		delete query.ptr();
+		
 	}
-	for (unsigned long i=0; i<numOfVecs; i++) {
-		if (distances[i]>-1) {
-			assignments[labels[i]].push_back(i);
-		}
-	}
-
+	delete fDataset.ptr();
 }
+
 void Kmeans::assignStep() {
 	for (unsigned cluster=0; cluster<k; cluster++) {
 		assignments[cluster].clear();
