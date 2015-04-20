@@ -37,7 +37,9 @@ cfg = i2_config(cfg);
 fprintf('Inverting index\n');
 C = xload(cfg.cell);
 E = xload(cfg.code);
+u = cputime;
 [P,I,S,cI,cS] = i2_invert(cfg, C, E);
+fprintf('Invert time: %.3fs\n', cputime - u);
 xsave(cfg.pop, P);
 xsave(cfg.idx, I);
 xsave(cfg.sig, S);
@@ -45,13 +47,17 @@ save(cfg.inv, 'cI', 'cS');
 
 %--------------------------------
 fprintf('Querying');
+if cfg.rr,
+	X = xload(cfg.base);
+else
+	X = [];
+end
 Q = xload(cfg.query);
 G = xload(cfg.grid);
 B = xload(cfg.book);
 P = xload(cfg.pop);
 load(cfg.inv, 'cI', 'cS');
 u = cputime;
-if ~rr, X = []; end
 R = i2_query(cfg, Q, G, B, P, cI, cS, X);
 u = cputime - u;
 fprintf('Query time: %.3fs total, %.2fms/query\n', u, u * 1000 / size(Q,2));
