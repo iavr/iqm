@@ -12,7 +12,7 @@
 			totalAvgScore = [];
 			totalAvgTime = [];
 			jjj = 1;
-				centers=csvread(sprintf('./data/initial_centroids_10000_%d.csv', i))';
+				centers=csvread(sprintf('./data/initial_centroids_%d_%d.csv', k, i))';
 				centers = single(centers);
 				I = exp_assign(centers, data(:,1:100000));
 				I2 = exp_assign(centers, data(:,100001:200000));
@@ -26,7 +26,7 @@
 				I10 = exp_assign(centers, data(:,900001:size(data,2)));
 				ass = [I I2 I3 I4 I5 I6 I7 I8 I9 I10];
 			%	ass = [I I2 I3 I4 I5];
-				clear('I', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7', 'I8', 'I9', 'I10') 
+				clear('I', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7', 'I8', 'I9', 'I10')
 			%	clear('I', 'I2', 'I3', 'I4', 'I5')
 				scr = exp_computeDistortion(centers, data, ass);
 				avgScore = scr + avgScore;

@@ -2,6 +2,7 @@
 #include <set>
 #include <random>
 #include <iostream>
+#include <sstream>
 #include <chrono>
 #include <flann/flann.hpp>
 
@@ -24,7 +25,7 @@ Kmeans::Kmeans(string dataFilename, unsigned long k, int l, int maxIter, bool ve
 }
 void Kmeans::saveCenters(int iter) {
 	ostringstream oss;
-	oss << "centers_iter_" << (iter+1/) << ".csv";
+	oss << "centers_iter_" << (iter+1) << ".csv";
 	ofstream outCenters(oss.str());
 	for (unsigned i=0; i<k; i++) {
 		outCenters << centers[i][0];
@@ -47,7 +48,7 @@ void Kmeans::initializeRandomly() {
 		if (initialCentersIds.find(id)==initialCentersIds.end()) {
 			initialCentersIds.insert(id);
 			centers.push_back(vector<float>());
-			
+
 			for (int j=0; j<dimension; j++) {
 				centers[currentIndex].push_back(dataset[id][j]);
 			}
@@ -61,7 +62,7 @@ void Kmeans::initializeExplicitly(dmatrix& initialCenters) {
 	//cout << "Initializing centers" << endl;
 	centers.clear();
 	for (unsigned long c=0; c<k; c++) {
-		centers.push_back(dvector());	
+		centers.push_back(dvector());
 		for (int dim=0; dim<dimension; dim++) {
 			centers[c].push_back(initialCenters[c][dim]);
 		}
@@ -121,7 +122,7 @@ void Kmeans::runAlgorithm() {
 //		cout << "\tKMeans objective score: " << score << endl;
 //		//cout << "\tSilhouetter score: " << sil << endl;
 //		//cout << "\tPercentage of assigned points " << (double) total/ numOfVecs << ", per: " << (double) total2/ numOfVecs << endl;
-	}	
+	}
 
 	/** Main Loop
 	 */
@@ -131,7 +132,7 @@ void Kmeans::runAlgorithm() {
 		//cout << "Iter #" << (iter+1) << endl;
 		/** Assign Step
 		 */
-		assignStep(index, centers); 
+		assignStep(index, centers);
 
 		/** Update Step
 		 */
@@ -249,7 +250,7 @@ void Kmeans::assignStep(flann::Index<flann::L2<float> >& index, dmatrix& centers
 		flann::Matrix<float> query(new float[dimension], 1, dimension);
 		for (int dim=0; dim<dimension; dim++) {
 			query[0][dim] = centers[cluster][dim];
-		}	
+		}
 		int pointsFound = index.knnSearch(query, indices, dists, l, flann::SearchParams());
 
 		for (unsigned long i=0; i<indices[0].size(); i++) {
@@ -274,7 +275,7 @@ void Kmeans::assignStep() {
 
 	for (unsigned i=0; i<numOfVecs; i++) {
 		labels[i] = 0;
-		double minDistance = PLA::euclideanDistanceSquared(centers[0], dataset[i]); 
+		double minDistance = PLA::euclideanDistanceSquared(centers[0], dataset[i]);
 		unsigned minIndex = 0;
 		for (unsigned long j=1; j<k; j++) {
 			double dist = PLA::euclideanDistanceSquared(centers[j], dataset[i]);

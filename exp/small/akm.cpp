@@ -2,6 +2,7 @@
 #include <set>
 #include <random>
 #include <iostream>
+#include <sstream>
 #include <chrono>
 #include <flann/flann.hpp>
 #include <flann/flann.h>
@@ -24,7 +25,7 @@ Kmeans::Kmeans(string dataFilename, unsigned long k, int maxIter, bool verbose) 
 }
 void Kmeans::saveCenters(int iter) {
 	ostringstream oss;
-	oss << "centers_iter_" << (iter+1/) << ".csv";
+	oss << "centers_iter_" << (iter+1) << ".csv";
 	ofstream outCenters(oss.str());
 	for (unsigned i=0; i<k; i++) {
 		outCenters << centers[i][0];
@@ -47,7 +48,7 @@ void Kmeans::initializeRandomly() {
 		if (initialCentersIds.find(id)==initialCentersIds.end()) {
 			initialCentersIds.insert(id);
 			centers.push_back(vector<float>());
-			
+
 			for (int j=0; j<dimension; j++) {
 				centers[currentIndex].push_back(dataset[id][j]);
 			}
@@ -61,7 +62,7 @@ void Kmeans::initializeExplicitly(dmatrix& initialCenters) {
 	//cout << "Initializing centers" << endl;
 	centers.clear();
 	for (unsigned long c=0; c<k; c++) {
-		centers.push_back(dvector());	
+		centers.push_back(dvector());
 		for (int dim=0; dim<dimension; dim++) {
 			centers[c].push_back(initialCenters[c][dim]);
 		}
@@ -75,7 +76,7 @@ void Kmeans::postInitialization() {
 void Kmeans::runAlgorithm() {
 	/** Initialization
 	 */
-	chrono::high_resolution_clock::time_point t1, t2; 
+	chrono::high_resolution_clock::time_point t1, t2;
 	if (verbose) {
 //		assignStep(index, centers);
 //		unsigned long total = 0;
@@ -108,7 +109,7 @@ void Kmeans::runAlgorithm() {
 //		cout << "\tKMeans objective score: " << score << endl;
 //		//cout << "\tSilhouetter score: " << sil << endl;
 //		//cout << "\tPercentage of assigned points " << (double) total/ numOfVecs << ", per: " << (double) total2/ numOfVecs << endl;
-	}	
+	}
 
 	/** Main Loop
 	 */
@@ -117,7 +118,7 @@ void Kmeans::runAlgorithm() {
 		//cout << "Iter #" << (iter+1) << endl;
 		/** Assign Step
 		 */
-		assignStep(centers); 
+		assignStep(centers);
 
 		/** Update Step
 		 */
@@ -241,7 +242,7 @@ void Kmeans::assignStep(dmatrix& centers) {
 		flann::Matrix<float> query(new float[dimension], 1, dimension);
 		for (int dim=0; dim<dimension; dim++) {
 			query[0][dim] = dataset[i][dim];
-		}	
+		}
 		int pointsFound = index.knnSearch(query, indices, dists, 1, flann::SearchParams());
 		if (pointsFound==0) continue;
 
@@ -249,7 +250,7 @@ void Kmeans::assignStep(dmatrix& centers) {
 		labels[i] = indices[0][0];
 		assignments[indices[0][0]].push_back(i);
 		delete query.ptr();
-		
+
 	}
 	delete fDataset.ptr();
 }
@@ -261,7 +262,7 @@ void Kmeans::assignStep() {
 
 	for (unsigned i=0; i<numOfVecs; i++) {
 		labels[i] = 0;
-		double minDistance = PLA::euclideanDistanceSquared(centers[0], dataset[i]); 
+		double minDistance = PLA::euclideanDistanceSquared(centers[0], dataset[i]);
 		unsigned minIndex = 0;
 		for (unsigned long j=1; j<k; j++) {
 			double dist = PLA::euclideanDistanceSquared(centers[j], dataset[i]);

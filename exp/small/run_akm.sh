@@ -16,6 +16,6 @@ for k in ${ks[@]}; do
 done
 
 
-comm="x=load_double_array('/home/user/sift/raw/sift_base.bin', 'single')'; ass=load_array('assignments.bin', 'uint32'); centers=load_double_array('computed_centers.bin', 'single')'; exp_computeDistortion(centers, x, ass)"
+#comm="x=load_double_array('/home/user/sift/raw/sift_base.bin', 'single')'; ass=load_array('assignments.bin', 'uint32'); centers=load_double_array('computed_centers.bin', 'single')'; exp_computeDistortion(centers, x, ass)"
 
-matlab -nodesktop -nosplash -r "$comm"
+#matlab -nodesktop -nosplash -r "$comm"
