@@ -22,6 +22,19 @@ Kmeans::Kmeans(string dataFilename, unsigned long k, int l, int maxIter, bool ve
 		assignments.push_back(uvector());
 	}
 }
+void Kmeans::saveCenters(int iter) {
+	ostringstream oss;
+	oss << "centers_iter_" << (iter+1/) << ".csv";
+	ofstream outCenters(oss.str());
+	for (unsigned i=0; i<k; i++) {
+		outCenters << centers[i][0];
+		for (int j=1; j<dimension; j++) {
+			outCenters << ", " << centers[i][j];
+		}
+		outCenters << "\n";
+	}
+	outCenters.close();
+}
 
 void Kmeans::initializeRandomly() {
 	std::uniform_int_distribution<int> distribution(0, numOfVecs-1);
@@ -45,7 +58,7 @@ void Kmeans::initializeRandomly() {
 }
 
 void Kmeans::initializeExplicitly(dmatrix& initialCenters) {
-	cout << "Initializing centers" << endl;
+	//cout << "Initializing centers" << endl;
 	centers.clear();
 	for (unsigned long c=0; c<k; c++) {
 		centers.push_back(dvector());	
@@ -53,7 +66,7 @@ void Kmeans::initializeExplicitly(dmatrix& initialCenters) {
 			centers[c].push_back(initialCenters[c][dim]);
 		}
 	}
-	cout << "Centers initialized. Computing original scores.." << endl;
+	//cout << "Centers initialized. Computing original scores.." << endl;
 }
 
 void Kmeans::postInitialization() {
@@ -62,20 +75,20 @@ void Kmeans::postInitialization() {
 void Kmeans::runAlgorithm() {
 	/** Initialization
 	 */
-	chrono::high_resolution_clock::time_point t1, t2; 
+	chrono::high_resolution_clock::time_point t1, t2, t3, t4;
 	flann::Matrix<float> fDataset(new float[numOfVecs*dimension], numOfVecs, dimension);
 	for (unsigned long i=0; i<numOfVecs; i++) {
 		for (int j=0; j<dimension; j++) {
 			fDataset[i][j] = dataset[i][j];
 		}
 	}
-	cout << "Creating flann index" << endl;
+	//cout << "Creating flann index" << endl;
 	t1 = chrono::high_resolution_clock::now();
 	flann::Index<flann::L2<float> > index(fDataset, flann::KDTreeIndexParams(10));
 	index.buildIndex();
 	t2 = chrono::high_resolution_clock::now();
 	chrono::duration<double> flannTime = chrono::duration_cast<chrono::duration<double>>(t2 - t1);
-	cout << "Flann index created. Took: "<< flannTime.count() << "s" << endl;
+	//cout << "Flann index created. Took: "<< flannTime.count() << "s" << endl;
 	if (verbose) {
 //		assignStep(index, centers);
 //		unsigned long total = 0;
@@ -101,20 +114,21 @@ void Kmeans::runAlgorithm() {
 //			total2 += assignments[c].size();
 //		}
 //
-		assignStep();
-		double score = computeScore(centers);
-		//double sil = silhouette(centers);
-		cout << "Initial cluster score:"  << endl;
-		cout << "\tKMeans objective score: " << score << endl;
-		//cout << "\tSilhouetter score: " << sil << endl;
-		//cout << "\tPercentage of assigned points " << (double) total/ numOfVecs << ", per: " << (double) total2/ numOfVecs << endl;
+//		assignStep();
+//		double score = computeScore(centers);
+//		//double sil = silhouette(centers);
+//		cout << "Initial cluster score:"  << endl;
+//		cout << "\tKMeans objective score: " << score << endl;
+//		//cout << "\tSilhouetter score: " << sil << endl;
+//		//cout << "\tPercentage of assigned points " << (double) total/ numOfVecs << ", per: " << (double) total2/ numOfVecs << endl;
 	}	
 
 	/** Main Loop
 	 */
 	t1 = chrono::high_resolution_clock::now();
 	for (int iter=0; iter<maxIter; iter++) {
-		cout << "Iter #" << (iter+1) << endl;
+		t3 = chrono::high_resolution_clock::now();
+		//cout << "Iter #" << (iter+1) << endl;
 		/** Assign Step
 		 */
 		assignStep(index, centers); 
@@ -156,21 +170,24 @@ void Kmeans::runAlgorithm() {
 		//	for (unsigned long c=0; c<k; c++) {
 		//		total2 += assignments[c].size();
 		//	}
-			assignStep();
+//			assignStep();
+			saveCenters(iter);
 
-			double score = computeScore(centers);
-			//double sil = silhouette(centers);
-			cout << "Iteration #" << (iter+1) << ":"  << endl;
-			cout << "\tKMeans objective score: " << score << endl;
-			//cout << "\tSilhouetter score: " << sil << endl;
-			cout << "\tPercentage of assigned points " << (double) total/ numOfVecs << endl;//", per: " << (double) total2/ numOfVecs << endl;
+//			double score = computeScore(centers);
+//			//double sil = silhouette(centers);
+//			cout << "Iteration #" << (iter+1) << ":"  << endl;
+//			cout << "\tKMeans objective score: " << score << endl;
+//			//cout << "\tSilhouetter score: " << sil << endl;
+//			cout << "\tPercentage of assigned points " << (double) total/ numOfVecs << endl;//", per: " << (double) total2/ numOfVecs << endl;
 			//cout <<	"\tTotal time: " << (assignTime.count() + updateTime.count()) << "s, update time: " << updateTime.count() << "s, assign time: " << assignTime.count() << "s" << endl;
 		}
+		t4 = chrono::high_resolution_clock::now();
+		chrono::duration<double> iterTime = chrono::duration_cast<chrono::duration<double>>(t4-t3);
+		cout << iterTime.count() << endl;
 	}
 	t2 = chrono::high_resolution_clock::now();
 	chrono::duration<double> loopTime = chrono::duration_cast<chrono::duration<double>>(t2 - t1);
-	cout << "Total iteration time: " << loopTime.count() << "s" << endl;
-	cout << "Total time: " << (loopTime.count() + flannTime.count()) << "s" << endl;
+	cout << flannTime.count() << " " << loopTime.count() << endl;
 }
 
 double Kmeans::computeScore(dmatrix& centers) {
@@ -256,7 +273,7 @@ void Kmeans::assignStep() {
 	}
 
 	for (unsigned i=0; i<numOfVecs; i++) {
-		labels[i] = k;
+		labels[i] = 0;
 		double minDistance = PLA::euclideanDistanceSquared(centers[0], dataset[i]); 
 		unsigned minIndex = 0;
 		for (unsigned long j=1; j<k; j++) {
