@@ -13,6 +13,7 @@ public:
 	void initializeExplicitly(dmatrix& initialCenters);
 	void assignStep(flann::Index<flann::L2<float> >& index, dmatrix& centers);
 	void assignStep();
+	void saveCenters(int iter);
 	void postInitialization();
 	double computeScore(dmatrix& centers);
 	double silhouette();
