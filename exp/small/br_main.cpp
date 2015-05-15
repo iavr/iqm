@@ -10,6 +10,8 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 	string inputFile;
+	string initialCentersFile;
+	dmatrix initialCenters;
 	string centerOutputFile = "computed_centers.bin";
 	string assignmentsFile = "assignments.bin";
 	string outFile;
@@ -36,20 +38,57 @@ int main(int argc, char* argv[]) {
 		istringstream parseMaxIter(argv[4]);
 		parseMaxIter >> maxIter;
 	}
+
+	if (argc>=6) {
+		
+		initialCentersFile = string(argv[5]);
+		string line;
+		ifstream in(initialCentersFile.c_str());
+		unsigned long current = 0;
+		while (getline(in, line)) {
+			initialCenters.push_back(dvector());	
+			istringstream iss(line);
+			string line2;
+			while (getline(iss, line2, ',')) {
+				istringstream convert(line2);
+				float value; convert >> value;	
+				initialCenters[current].push_back(value);
+			}
+			current++;
+		}
+	}
 		
 	Kmeans kmeans(inputFile, k, t, maxIter, verbose);
 	if (t==-1) {
 		kmeans.l = kmeans.numOfVecs/ k;
 	}
-	kmeans.initializeRandomly();
+	if (argc>=6) {
+		kmeans.initializeExplicitly(initialCenters);
+	}
+	else {
+		kmeans.initializeRandomly();
+	}
+	
 	kmeans.runAlgorithm();
 
-	save_double_array<vector, vector, float, allocator<float>, allocator<vector<float> > >(kmeans.centers, centerOutputFile);
-	save_array<vector, unsigned, allocator<unsigned> >(kmeans.labels, assignmentsFile);
-	ofstream out("assignments.csv");
-	out << kmeans.labels[0];
-	for (unsigned i=1; i<kmeans.numOfVecs; i++) {
-		out << ", " << kmeans.labels[i];
+	//save_double_array<vector, vector, float, allocator<float>, allocator<vector<float> > >(kmeans.centers, centerOutputFile);
+//	save_double_array<vector, vector, float, allocator<float>, allocator<vector<float> > >(kmeans.centers, centerOutputFile);
+//	save_array<vector, unsigned, allocator<unsigned> >(kmeans.labels, assignmentsFile);
+//	ofstream out("assignments.csv");
+//	out << kmeans.labels[0];
+//	for (unsigned i=1; i<kmeans.numOfVecs; i++) {
+//		out << ", " << kmeans.labels[i];
+//	}
+//	out.close();
+
+	ofstream outCenters("centers.csv");
+	for (unsigned i=0; i<kmeans.k; i++) {
+		outCenters << kmeans.centers[i][0];
+		for (int j=1; j<kmeans.dimension; j++) {
+			outCenters << ", " << kmeans.centers[i][j];
+		}
+		outCenters << "\n";
 	}
-	out.close();
+	outCenters.close();
+
 }
