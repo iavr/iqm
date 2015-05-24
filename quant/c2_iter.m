@@ -1,4 +1,4 @@
-function [W,A] = c2_iter(cfg, W, G, B, E, P, Mi, M, X, C)
+function [W,A,times] = c2_iter(cfg, W, G, B, E, P, Mi, M, X, C)
 
 % W:  centroids (target codebook)
 % A:  assignment of cells to centroids
@@ -28,7 +28,7 @@ C = int_dec(int_pack(C, c));               % cell position per point
 T = uint32(cfg.t * sum(P(:)) / K);         % search target (# of points x N/K)
 
 % main iteration
-timess = []
+times = [];
 for n = 1:cfg.it
 	% display
 	if cfg.verbose
@@ -43,14 +43,14 @@ for n = 1:cfg.it
 		end
 	end
 
-	aa = cputime;
+	t = cputime;
 	% assignment step - subspace search
 	% w nearest cells & distances^2 to centroids per subspace
 	[I, S] = nn_sub(G, W, 2, w);
 
 	% ikm iteration - assignment by search + update + purge
 	ikm_auto(p, W, s, I-1, S, P, Mi-1, M, A, Z, U, V, Q, T, cfg.cn, cfg.o);
-	aa = cputime - aa;
+	t = cputime - t;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Uncomment the following to save the centers every 5 iterations  %%
@@ -58,8 +58,7 @@ for n = 1:cfg.it
 %	if (mod(n,5)==0)
 %		xsave(sprintf('./iter_experiment/iter_%d/centers_%d.f4',iter,n),W);
 %	end
-	timess = [timess aa];
+	times = [times t];
 end
 
 A = A + 1;  % one-based
-A = timess;

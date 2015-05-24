@@ -4,7 +4,8 @@ function cfg = config(cfg)
 % adjust these paths to your local settings
 %-------------------------------------------
 yael = '/usr/local/lib/yael/matlab';
-home  = '/data/exp/nn/';
+xio  = '/data/dev/xio/matlab';
+home = '/data/exp/nn/';
 %-------------------------------------------
 
 % verbose operation?
@@ -13,7 +14,7 @@ if ~isfield(cfg, 'verbose')
 end
 
 % matlab path
-addpath(yael);
+addpath(yael, xio);
 addpath('../lib', '../util', '../disp', '../config');
 addpath('../sub', '../quant', '../cluster');
 
