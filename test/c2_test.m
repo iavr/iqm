@@ -1,40 +1,41 @@
-addpath('../config');
+%--------------------------------
+cfg.dataset = 'siftsmall';
+cfg.dataset = 'sift';
+cfg.gen = false;
+cfg.verbose = 1;
+%
+cfg.it  = 20;         % # of iterations
+cfg.K   = 1000;       % # of clusters
+cfg.c   = 256;        % # of cells
+cfg.sub = false;      % quantize sub-centroids
+cfg.k   = 256;        % fine codebook size  (only if sub)
+cfg.m   = 16;         % # of subspaces      (only if sub)
+cfg.w   = 16;         % search window
+cfg.t   = 1;          % search target (# of points x N/K)
+%  cfg.cn  = [6 20];     % # of centroid neighbors
+%  cfg.o   = .6;         % overlap threshold
+cfg.cn  = [1 0];      % # of centroid neighbors
+cfg.o   = .0;         % overlap threshold
 
 %  %--------------------------------
-%  cfg.it = 20;         % # of iterations
-%  cfg.K  = 1000;       % # of clusters
-%  cfg.c  = 512;        % # of cells
-%  cfg.m  = 16;         % # of subspaces      (unused currently)
-%  cfg.k  = 256;        % fine codebook size  (unused currently)
-%  cfg.w  = 64;         % search window
-%  cfg.rr = 128;        % centroid rerank     (unused currently)
-%  cfg.t  = 5;          % search target (# of points x N/K)
-%  cfg.cn = [6 20];     % # of centroid neighbors
-%  cfg.o  = .6;         % overlap threshold
-%  %
-%  %  cfg.dataset = 'siftsmall';
-%  cfg.dataset = 'sift';
+%  cfg.dataset = '2d_uni';
+%  cfg.dataset = '2d_gm';
 %  cfg.gen = false;
-%  cfg.verbose = 1;
+%  cfg.verbose = 2;
+%  %
+%  cfg.it  = 10;        % # of iterations
+%  cfg.K   = 24;        % # of clusters
+%  cfg.c   = 64;        % # of cells
+%  cfg.sub = false;     % quantize sub-centroids
+%  cfg.m   = 2;         % # of subspaces      (only if sub)
+%  cfg.k   = 16;        % fine codebook size  (only if sub)
+%  cfg.w   = 24;        % search window
+%  cfg.t   = 2;         % search target (# of points x N/K)
+%  cfg.cn  = [4 10];    % # of centroid neighbors
+%  cfg.o   = .6;        % overlap threshold
 
 %--------------------------------
-cfg.it = 10;        % # of iterations
-cfg.K  = 24;        % # of clusters
-cfg.c  = 64;        % # of cells
-cfg.m  = 2;         % # of subspaces      (unused currently)
-cfg.k  = 16;        % fine codebook size  (unused currently)
-cfg.w  = 24;        % search window
-cfg.rr = 16;        % centroid rerank     (unused currently)
-cfg.t  = 2;         % search target (# of points x N/K)
-cfg.cn = [4 10];    % # of centroid neighbors
-cfg.o  = .6;        % overlap threshold
-%
-cfg.dataset = '2d_uni';
-cfg.dataset = '2d_gm';
-cfg.gen = false;
-cfg.verbose = 2;
-
-%--------------------------------
+addpath('../config');
 cfg = c2_config(cfg);
 
 %  %--------------------------------
@@ -69,15 +70,14 @@ cfg = c2_config(cfg);
 %  xsave(cfg.mean, M);
 %  xsave(cfg.idx, I);
 %  save(cfg.inv, 'cI');
-%
+
 %--------------------------------
 fprintf('Initializing\n');
 G = xload(cfg.grid);
 B = xload(cfg.book);
-E = xload(cfg.cell);
 P = xload(cfg.pop);
 u = cputime;
-W = c2_init(cfg, G, B, E, P);
+W = c2_init(cfg, G, B, P);
 fprintf('Initialize time: %.3fs\n', cputime - u);
 xsave(cfg.cen, W);
 
@@ -93,7 +93,7 @@ end
 W  = xload(cfg.cen);
 G  = xload(cfg.grid);
 B  = xload(cfg.book);
-E  = xload(cfg.cell);
+E  = xload(cfg.code);
 P  = xload(cfg.pop);
 Mi = xload(cfg.mean_i);
 M  = xload(cfg.mean);

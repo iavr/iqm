@@ -1,9 +1,8 @@
-function W = c2_init(cfg, G, B, E, P)
+function W = c2_init(cfg, G, B, P)
 
 % W: centroids (target codebook)
 % G: grid (coarse codebook)
 % B: fine codebook (for coarse)
-% E: coarse codebook encoded by fine
 % P: population count per cell (matrix in grid dimensions)
 
 s = sampler(double(P));
