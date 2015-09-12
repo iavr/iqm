@@ -61,7 +61,7 @@ md([cfg.data 'clust/'])
 
 % functions
 cfg.ext = @(k) int_type(k);
-cfg.cluster = @(X,k) yael_kmeans(X, k, 'niter', 100, 'verbose', false);
+cfg.cluster = @(X,k) yael_kmeans(X, k, 'niter', 20, 'verbose', false);
 
 % recall@R evaluation
 if isfield(cfg, 'r')

@@ -5,4 +5,4 @@ function E = enc(B, X)
 % X: input data points (columns)
 
 type = int_type(size(B,2));
-E = int_enc(nn(B, X), type);
+E = int_enc(nn(X, B), type);

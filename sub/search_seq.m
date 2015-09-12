@@ -1,4 +1,4 @@
-function [C, S] = search_seq_mat(I, D, P, A, V, T)
+function [C, S] = search_seq(I, D, P, A, V, T)
 % multi-sequence algorithm (SLOW version): finds cell indices in increasing distance such that total population is at least t, in a block of cell sub-indices I at sub-distances D
 %
 % C: cell indices found, in increasing distance

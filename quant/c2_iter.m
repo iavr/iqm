@@ -52,9 +52,9 @@ for n = 1:cfg.it
 	% assignment step - subspace search
 	% w nearest cells & distances^2 to centroids per subspace
 	if cfg.sub,
-		[I, S] = ex_nn_sub(B, E, W, 2, w);
+		[I, S] = ex_nn_sub(W, B, E, 2, w);
 	else
-		[I, S] = nn_sub(G, W, 2, w);
+		[I, S] = nn_sub(W, G, 2, w);
 	end
 
 	% ikm iteration - assignment by search + update + purge

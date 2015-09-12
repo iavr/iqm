@@ -1,10 +1,10 @@
-function [idx, dist] = ex_nn(B, E, Q, r, verb)
+function [idx, dist] = ex_nn(Q, B, E, r, verb)
 
 % idx: top-ranking points
 % dist: top-ranking (least) distances
+% Q: query points
 % B: codebook
 % E: encoded points
-% Q: queries
 % r: # nearest neighbors
 % verb: verbose mode
 
@@ -13,12 +13,12 @@ if nargin < 5, verb = false; end
 
 k = size(B,2);                                 % codebook size
 m = size(E,1);                                 % # subspaces
-[d, D, nq] = slices(Q, m);                     % dims / subspace, dims, # queries
+[d, D, N] = slices(Q, m);                      % dims / subspace, dims, # queries
 
-idx  = zeros(r, nq, 'uint32');                 % top ranking indices
-dist = zeros(r, nq, 'single');                 % top ranking distances
+idx  = zeros(r, N, 'uint32');                  % top ranking indices
+dist = zeros(r, N, 'single');                  % top ranking distances
 
-for q = 1:nq                                   % queries
+for q = 1:N                                    % queries
 	L = zeros(k, m, 'single');                  % lookup table
 	for i = 1:m                                 % subspaces
 		s = slice(i, d, D);                      % dimensions in subspace

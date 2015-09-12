@@ -1,6 +1,8 @@
-addpath('../config');
-
 %--------------------------------
+%  cfg.dataset = 'siftsmall';
+cfg.dataset = 'sift';
+%  cfg.dataset = 'gist';
+
 cfg.c = 32;     % # of cells
 cfg.m = 8;      % # of subspaces
 cfg.k = 256;    % codebook size
@@ -9,8 +11,8 @@ cfg.t = 15000;  % search target
 cfg.r = 100;    % max recall
 cfg.rr = false; % re-rank
 
-%  cfg.dataset = 'siftsmall';
-cfg.dataset = 'sift';
+%--------------------------------
+addpath('../config');
 cfg = i2_config(cfg);
 
 %  %--------------------------------
@@ -21,7 +23,7 @@ cfg = i2_config(cfg);
 %  fprintf('Learn time: %.3fs\n', cputime - u);
 %  xsave(cfg.grid, G);
 %  xsave(cfg.book, B);
-%
+%  %
 %  %--------------------------------
 %  fprintf('Encoding vectors\n');
 %  G = xload(cfg.grid);
@@ -32,18 +34,18 @@ cfg = i2_config(cfg);
 %  fprintf('Encode time: %.3fs\n', cputime - u);
 %  xsave(cfg.cell, C);
 %  xsave(cfg.code, E);
-
-%--------------------------------
-fprintf('Inverting index\n');
-C = xload(cfg.cell);
-E = xload(cfg.code);
-u = cputime;
-[P,I,S,cI,cS] = i2_invert(cfg, C, E);
-fprintf('Invert time: %.3fs\n', cputime - u);
-xsave(cfg.pop, P);
-xsave(cfg.idx, I);
-xsave(cfg.sig, S);
-save(cfg.inv, 'cI', 'cS');
+%
+%  %--------------------------------
+%  fprintf('Inverting index\n');
+%  C = xload(cfg.cell);
+%  E = xload(cfg.code);
+%  u = cputime;
+%  [P,I,S,cI,cS] = i2_invert(cfg, C, E);
+%  fprintf('Invert time: %.3fs\n', cputime - u);
+%  xsave(cfg.pop, P);
+%  xsave(cfg.idx, I);
+%  xsave(cfg.sig, S);
+%  save(cfg.inv, 'cI', 'cS');
 
 %--------------------------------
 fprintf('Querying');

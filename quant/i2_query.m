@@ -2,7 +2,7 @@ function [idx, dist] = i2_query(cfg, Q, G, B, P, cI, cS, X)
 
 % idx: top-ranking points
 % dist: top-ranking (least) distances
-% Q: queries
+% Q: query points
 % G: grid (coarse codebook)
 % B: fine codebook
 % P: population count per cell
@@ -12,16 +12,16 @@ function [idx, dist] = i2_query(cfg, Q, G, B, P, cI, cS, X)
 
 if nargin < 7, X = []; end;
 
-[d, D, nq] = slices(Q, cfg.m);                 % dims, dims / subspace, # queries
+[d, D, N] = slices(Q, cfg.m);                  % dims / subspace, dims, # queries
 L = zeros(cfg.k, cfg.m, 'single');             % lookup table
 r = cfg.r;                                     % # top ranking results
-dist = inf  (r, nq, 'single');                 % top ranking distances
-idx  = zeros(r, nq, 'uint32');                 % top ranking indices
+dist = inf  (r, N, 'single');                  % top ranking distances
+idx  = zeros(r, N, 'uint32');                  % top ranking indices
 U = zeros(cfg.w, cfg.w, 'uint32');             % cell indices buffer
 V = zeros(cfg.c, cfg.c, 'uint8');              % visited status per cell
-[IQ, SQ] = nn_sub(G, Q, 2, cfg.w);             % w nearest cells & distances^2 ..
+[IQ, SQ] = nn_sub(Q, G, 2, cfg.w);             % w nearest cells & distances^2 ..
                                                % .. to queries per subspace
-for q = 1:nq                                   % queries
+for q = 1:N                                    % queries
 	I = reshape(IQ(:,q), [cfg.w 2]) - 1;        % top w cells per subspace
 	S = reshape(SQ(:,q), [cfg.w 2]);            % top w distances per subspace
 	C = search_seq(I, S, P, U, V, cfg.t) + 1;   % multi-sequence algorithm
@@ -44,7 +44,7 @@ for q = 1:nq                                   % queries
 	else
 		[~,i] = kmin(cd, r);                     % top r distances per query
 		ci = ci(i);                              % top r indices per query
-		[i, dist(T,q)] = nn(X(:,ci), Q(:,q), r); % re-ranking on X
+		[i, dist(T,q)] = nn(Q(:,q), X(:,ci), r); % re-ranking on X
 		idx(T,q) = ci(i);
 	end
 	if cfg.verbose & mod(q,100)==0, fprintf('.'), end

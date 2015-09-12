@@ -1,12 +1,14 @@
-addpath('../config');
-
 %--------------------------------
+%  cfg.dataset = 'siftsmall';
+cfg.dataset = 'sift';
+%  cfg.dataset = 'gist';
+
 cfg.m = 8;     % # of subspaces
 cfg.k = 256;   % codebook size
 cfg.r = 1000;  % max recall
 
-%  dataset = 'siftsmall';
-cfg.dataset = 'sift';
+%--------------------------------
+addpath('../config');
 cfg = ex_config(cfg);
 
 %  %--------------------------------
@@ -16,7 +18,7 @@ cfg = ex_config(cfg);
 %  B = ex_learn(cfg, X);
 %  fprintf('Learn time: %.3fs\n', cputime - u);
 %  xsave(cfg.book, B);
-%
+%  %
 %  %--------------------------------
 %  fprintf('Encoding vectors\n');
 %  B = xload(cfg.book);

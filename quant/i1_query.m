@@ -2,7 +2,7 @@ function [idx, dist] = i1_query(cfg, Q, G, B, P, cI, cS, X)
 
 % idx: top-ranking points
 % dist: top-ranking (least) distances
-% Q: queries
+% Q: query points
 % G: grid (coarse codebook)
 % B: fine codebook
 % P: population count per cell
@@ -12,14 +12,14 @@ function [idx, dist] = i1_query(cfg, Q, G, B, P, cI, cS, X)
 
 if nargin < 7, X = []; end;
 
-[d, D, nq] = slices(Q, cfg.m);                 % dims, dims / subspace, # queries
+[d, D, N] = slices(Q, cfg.m);                  % dims / subspace, dims, # queries
 L = zeros(cfg.k, cfg.m, 'single');             % lookup table
 r = cfg.r;                                     % # top ranking results
-dist = inf  (r, nq, 'single');                 % top ranking distances
-idx  = zeros(r, nq, 'uint32');                 % top ranking indices
-C = nn(G, Q, cfg.w);                           % w nearest cells to queries
+dist = inf  (r, N, 'single');                  % top ranking distances
+idx  = zeros(r, N, 'uint32');                  % top ranking indices
+C = nn(Q, G, cfg.w);                           % w nearest cells to queries
 
-for q = 1:nq                                   % queries
+for q = 1:N                                    % queries
 	w = cfg.w;                                  % # of top cells
 	c = C(:,q);                                 % top w cells
 	f = min(find(cumsum(P(c)) >= cfg.t));       % top cells containing ..
@@ -42,7 +42,7 @@ for q = 1:nq                                   % queries
 	else
 		[~,i] = kmin(cd, r);                     % top r distances per query
 		ci = ci(i);                              % top r indices per query
-		[i, dist(T,q)] = nn(X(:,ci), Q(:,q), r); % re-ranking on X
+		[i, dist(T,q)] = nn(Q(:,q), X(:,ci), r); % re-ranking on X
 		idx(T,q) = ci(i);
 	end
 	if cfg.verbose & mod(q,100)==0, fprintf('.'), end
