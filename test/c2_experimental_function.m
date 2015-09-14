@@ -2,10 +2,10 @@ addpath('../config');
 
 loop_times_1 = [];
 loop_times_2 = [];
-for k=1000:1000:10000
+for k=1000:1000:1000
 	avg_time_1 = 0;
 	avg_time_2 = 0;
-	for iter=0:0	
+	for iter=0:3	
 		%  %--------------------------------
 		%  cfg.it = 20;         % # of iterations
 		%  cfg.K  = 1000;       % # of clusters
@@ -31,7 +31,7 @@ for k=1000:1000:10000
 		cfg.k  = 256;        % fine codebook size  (unused currently)
 		cfg.w  = 5;        % search window
 		cfg.rr = 128;        % centroid rerank     (unused currently)
-		cfg.t  = 3;         % search target (# of points x N/K)
+		cfg.t  = 5;         % search target (# of points x N/K)
 		cfg.cn = [1 10];    % # of centroid neighbors
 		cfg.o  = 0;        % overlap threshold
 		%
