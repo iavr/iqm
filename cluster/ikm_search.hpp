@@ -2,6 +2,9 @@
 // cell object holding block offset and distance;
 // created given block coordinates, which can be retrieved by on()
 
+//#include <fstream>
+//#include <vector>
+//#include <sstream>
 struct cell
 {
 	int u;
@@ -36,6 +39,7 @@ void search(
 )
 {
 	typedef priority_queue<cell, vector<cell>, cell::closer> queue;
+	//std::vector<unsigned> visited(K);
 
 	// for all centroids k
 	for(int k = 0, w2 = 2 * w; k < K; ++k, I += w2, S += w2)
@@ -63,8 +67,17 @@ void search(
 				q.push(cell(u1+1, u2));             // .. propagate below
 		}
 
+		//visited[k] += 1+v.n;
 		v.clear();
 	}
+	
+	//std::ostringstream sss;
+	//sss << "cells_" << K << ".txt";
+	//std::ofstream z(sss.str().c_str());
+	//for(int i=0; i<K; ++i)
+	//	z << visited[i] << '\n';
+	//z.close();
+
 }
 
 //-----------------------------------------------------------------------------
