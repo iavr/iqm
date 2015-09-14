@@ -68,7 +68,7 @@ for n = 1:cfg.it
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%%  If inputID is given, save the centers every 5 iterations        %%
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	if (~isempty(inputID) && mod(n,5)==0)
+	if (~isempty(inputID) && mod(n,1)==0)
 		if(exist('./results') ~= 7), mkdir './results', end
 		xsave(sprintf('./results/intermediate_%d_%d_%d.f4', K, inputID, n), W);
 	end
