@@ -1,4 +1,4 @@
-function [W,A,times] = c2_iter(cfg, W, G, B, E, P, Mi, M, X, C)
+function [W,A,times] = c2_iter(cfg, W, G, B, E, P, Mi, M, X, C, inputID)
 
 % W:  centroids (target codebook)
 % A:  assignment of cells to centroids
@@ -67,10 +67,9 @@ for n = 1:cfg.it
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Uncomment the following to save the centers every 5 iterations  %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%	if (mod(n,5)==0)
-%		xsave(sprintf('./iter_experiment/iter_%d/centers_%d.f4',iter,n),W);
-%	end
-
+	%if (mod(n,5)==0)
+	%	xsave(sprintf('./results/intermediate_%d_%d_%d.f4', K, inputID, n), W);
+	%end
+	times = [times t];
 end
-
 A = A + 1;  % one-based
