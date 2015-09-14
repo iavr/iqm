@@ -5,6 +5,7 @@
 //#include <fstream>
 //#include <vector>
 //#include <sstream>
+
 struct cell
 {
 	int u;
@@ -70,7 +71,7 @@ void search(
 		//visited[k] += 1+v.n;
 		v.clear();
 	}
-	
+
 	//std::ostringstream sss;
 	//sss << "cells_" << K << ".txt";
 	//std::ofstream z(sss.str().c_str());

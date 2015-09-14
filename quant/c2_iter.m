@@ -11,7 +11,8 @@ function [W,A,times] = c2_iter(cfg, W, G, B, E, P, Mi, M, X, C, inputID)
 % X:  input data points (optional, for display only)
 % C:  cell per point (optional, for display only)
 
-if nargin < 8, X = []; end
+if nargin < 9, X = []; end
+if nargin < 11, inputID = []; end
 
 K = cfg.K;                                 % # of centroids
 c = cfg.c;                                 % # of cells
@@ -64,12 +65,14 @@ for n = 1:cfg.it
 	t = cputime - t;
 	times = [times t];
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%  Uncomment the following to save the centers every 5 iterations  %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%if (mod(n,5)==0)
-	%	xsave(sprintf('./results/intermediate_%d_%d_%d.f4', K, inputID, n), W);
-	%end
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%  If inputID is given, save the centers every 5 iterations        %%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	if (~isempty(inputID) && mod(n,5)==0)
+		if(exist('./results') ~= 7), mkdir './results', end
+		xsave(sprintf('./results/intermediate_%d_%d_%d.f4', K, inputID, n), W);
+	end
+
 	times = [times t];
 end
 A = A + 1;  % one-based
