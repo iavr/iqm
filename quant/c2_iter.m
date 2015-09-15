@@ -65,7 +65,7 @@ for n = 1:cfg.it_m
 
 	% save centers every cfg.it_i iterations
 	if mod(n, cfg.it_i) == 0,
-		xsave(sprintf(cfg.iter, cfg.in, n), W);
+		xsave(sprintf(cfg.iter, cfg.K, cfg.in, n), W);
 	end
 
 end

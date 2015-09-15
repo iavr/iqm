@@ -7,7 +7,7 @@ cfg.verbose = 0;
 cfg.in    = 0:0;        % input ids
 cfg.it_m  = 20;         % # of iterations (maximum)
 cfg.it_i  = 1;          % # of iterations (increment for saving; 0: no saving)
-cfg.K_m   = 1000;       % # of clusters (maximum)
+cfg.K_m   = 2000;       % # of clusters (maximum)
 cfg.K     = 1000;       % # of clusters (current/increment)
 cfg.c     = 256;        % # of cells
 cfg.sub   = false;      % quantize sub-centroids
@@ -86,17 +86,17 @@ for K = cfg.K:cfg.K:cfg.K_m
 		cfg = c2_config(cfg);
 
 		%--------------------------------
-		fprintf('Initializing\n');
+		if cfg.verbose, fprintf('Initializing\n'); end
 		G = xload(cfg.grid);
 		B = xload(cfg.book);
 		P = xload(cfg.pop);
 		u = cputime;
 		W = c2_init(cfg, G, B, P);
-		fprintf('Initialize time: %.3fs\n', cputime - u);
+		if cfg.verbose, fprintf('Initialize time: %.3fs\n', cputime - u); end
 		xsave(cfg.cen, W);
 
 		%--------------------------------
-		fprintf('Iterating\n');
+		if cfg.verbose, fprintf('Iterating\n'); end
 		if cfg.synth
 			X = xload(cfg.base);
 			C = xload(cfg.cell);
