@@ -1,9 +1,13 @@
 loop_times_1 = [];
 loop_times_2 = [];
-for k=1000:1000:10000
+for k=1000:1000:1000
 	avg_time_1 = 0;
 	avg_time_2 = 0;
+<<<<<<< HEAD
 	for iter=0:0
+=======
+	for iter=0:3	
+>>>>>>> 917ce332527011b64f99fefb847b3bfc7aca329e
 		%  %--------------------------------
 		%  cfg.dataset = 'siftsmall';
 		%  cfg.dataset = 'sift';
@@ -22,7 +26,22 @@ for k=1000:1000:10000
 		%  cfg.o  = .6;         % overlap threshold
 
 		%--------------------------------
+<<<<<<< HEAD
 		cfg.dataset = '2d_gm';
+=======
+		cfg.it = 20;        % # of iterations
+		cfg.K  = k;        % # of clusters
+		cfg.c  = 256;        % # of cells
+		cfg.m  = 16;         % # of subspaces      (unused currently)
+		cfg.k  = 256;        % fine codebook size  (unused currently)
+		cfg.w  = 5;        % search window
+		cfg.rr = 128;        % centroid rerank     (unused currently)
+		cfg.t  = 5;         % search target (# of points x N/K)
+		cfg.cn = [1 10];    % # of centroid neighbors
+		cfg.o  = 0;        % overlap threshold
+		%
+		%cfg.dataset = '2d_gm';
+>>>>>>> 917ce332527011b64f99fefb847b3bfc7aca329e
 		cfg.dataset = 'sift';
 		cfg.gen = false;
 		cfg.verbose = 0;
