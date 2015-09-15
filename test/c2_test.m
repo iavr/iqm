@@ -82,11 +82,11 @@ cfg = c2_config(cfg);
 %  save(cfg.inv, 'cI');
 
 avg = [];
+inputs = max(cfg.ids) + 1;
 for K = cfg.K_i:cfg.K_i:cfg.K_m
 	fprintf('Clustering with k = %d\n', K);
 	cfg.K = K;
 	total = [0; 0];
-	inputs = max(cfg.in) + 1;
 
 	for in = cfg.ids
 		fprintf('Using initial input %d\n', in);
