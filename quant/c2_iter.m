@@ -1,4 +1,4 @@
-function [W,A,times] = c2_iter(cfg, W, G, B, E, P, Mi, M, X, C, inputID)
+function [W,A,times] = c2_iter(cfg, W, G, B, E, P, Mi, M, X, C)
 
 % W:  centroids (target codebook)
 % A:  assignment of cells to centroids
@@ -12,7 +12,6 @@ function [W,A,times] = c2_iter(cfg, W, G, B, E, P, Mi, M, X, C, inputID)
 % C:  cell per point (optional, for display only)
 
 if nargin < 9, X = []; end
-if nargin < 11, inputID = []; end
 
 K = cfg.K;                                 % # of centroids
 c = cfg.c;                                 % # of cells
@@ -29,10 +28,10 @@ C = int_dec(int_pack(C, c));               % cell position per point
 T = uint32(cfg.t * sum(P(:)) / K);         % search target (# of points x N/K)
 
 % timing
-times = [];
+times = zeros(1, cfg.it);
 
 % main iteration
-for n = 1:cfg.it
+for n = 1:cfg.it_m
 
 	% display
 	if cfg.verbose
@@ -62,17 +61,13 @@ for n = 1:cfg.it
 	ikm_auto(p, W, s, I-1, S, P, Mi-1, M, A, Z, U, V, Q, T, cfg.cn, cfg.o);
 
 	% end timing
-	t = cputime - t;
-	times = [times t];
+	times(n) = cputime - t;
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%%  If inputID is given, save the centers every 5 iterations        %%
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	if (~isempty(inputID) && mod(n,1)==0)
-		if(exist('./results') ~= 7), mkdir './results', end
-		xsave(sprintf('./results/intermediate_%d_%d_%d.f4', K, inputID, n), W);
+	% save centers every cfg.it_i iterations
+	if mod(n, cfg.it_i) == 0,
+		xsave(sprintf(cfg.iter, cfg.in, n), W);
 	end
 
-	times = [times t];
 end
-A = A + 1;  % one-based
+
+A = A + 1;  % one-based assignments

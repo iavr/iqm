@@ -3,11 +3,7 @@ loop_times_2 = [];
 for k=1000:1000:1000
 	avg_time_1 = 0;
 	avg_time_2 = 0;
-<<<<<<< HEAD
-	for iter=0:0
-=======
-	for iter=0:3	
->>>>>>> 917ce332527011b64f99fefb847b3bfc7aca329e
+	for input=0:0
 		%  %--------------------------------
 		%  cfg.dataset = 'siftsmall';
 		%  cfg.dataset = 'sift';
@@ -15,7 +11,7 @@ for k=1000:1000:1000
 		%  cfg.verbose = 1;
 		%  %
 		%  cfg.it = 20;         % # of iterations
-		%  cfg.K  = 1000;       % # of clusters
+		%  cfg.K  = k;          % # of clusters
 		%  cfg.c  = 512;        % # of cells
 		%  cfg.sub = false;     % quantize sub-centroids
 		%  cfg.k   = 256;       % fine codebook size  (only if sub)
@@ -26,22 +22,7 @@ for k=1000:1000:1000
 		%  cfg.o  = .6;         % overlap threshold
 
 		%--------------------------------
-<<<<<<< HEAD
 		cfg.dataset = '2d_gm';
-=======
-		cfg.it = 20;        % # of iterations
-		cfg.K  = k;        % # of clusters
-		cfg.c  = 256;        % # of cells
-		cfg.m  = 16;         % # of subspaces      (unused currently)
-		cfg.k  = 256;        % fine codebook size  (unused currently)
-		cfg.w  = 5;        % search window
-		cfg.rr = 128;        % centroid rerank     (unused currently)
-		cfg.t  = 5;         % search target (# of points x N/K)
-		cfg.cn = [1 10];    % # of centroid neighbors
-		cfg.o  = 0;        % overlap threshold
-		%
-		%cfg.dataset = '2d_gm';
->>>>>>> 917ce332527011b64f99fefb847b3bfc7aca329e
 		cfg.dataset = 'sift';
 		cfg.gen = false;
 		cfg.verbose = 0;
@@ -61,7 +42,7 @@ for k=1000:1000:1000
 		addpath('../config');
 		cfg = c2_config(cfg);
 
-		%  %--------------------------------
+		%%--------------------------------
 		%fprintf('Learning codebooks\n');
 		%X = xload(cfg.learn);
 		%u = cputime;
@@ -70,7 +51,7 @@ for k=1000:1000:1000
 		%xsave(cfg.grid, G);
 		%xsave(cfg.book, B);
 		%
-		%--------------------------------
+		%%--------------------------------
 		%fprintf('Encoding vectors & codebooks\n');
 		%G = xload(cfg.grid);
 		%B = xload(cfg.book);
@@ -80,8 +61,8 @@ for k=1000:1000:1000
 		%fprintf('Encode time: %.3fs\n', cputime - u);
 		%xsave(cfg.cell, C);
 		%xsave(cfg.code, E);
-		  %
-		%  %--------------------------------
+		%
+		%%--------------------------------
 		%fprintf('Inverting\n');
 		%C = xload(cfg.cell);
 		%X = xload(cfg.base);
@@ -94,7 +75,7 @@ for k=1000:1000:1000
 		%xsave(cfg.idx, I);
 		%save(cfg.inv, 'cI');
 
-		%--------------------------------
+		%%--------------------------------
 		%fprintf('Initializing\n');
 		%G = xload(cfg.grid);
 		%B = xload(cfg.book);
@@ -116,7 +97,7 @@ for k=1000:1000:1000
 		end
 		%W  = xload(cfg.cen);
 		X = xload(cfg.learn);
-		W  = single(csvread(sprintf('/home/user/ikm/exp/small/data/initial_centroids_%d_%d.csv',k,iter))');%xload(cfg.cen);
+		W  = single(csvread(sprintf('/home/user/ikm/exp/small/data/initial_centroids_%d_%d.csv',k,input))');%xload(cfg.cen);
 
 		G  = xload(cfg.grid);
 		B  = xload(cfg.book);
@@ -126,12 +107,12 @@ for k=1000:1000:1000
 		M  = xload(cfg.mean);
 		cfg.K = size(W, 2);
 		u = cputime;
-		[W,A,times] = c2_iter(cfg, W, G, B, E, P, Mi, M, X, C, iter);
+		[W,A,times] = c2_iter(cfg, W, G, B, E, P, Mi, M, X, C, input);
 		u = cputime - u;
 		avg_time_1 = avg_time_1 + sum(times);
 		avg_time_2 = avg_time_2 + u;
 		fprintf('Iterate time: %.3fs (actual: %.3fs)\n', u, sum(times));
-		xsave(sprintf('./results/final_%d_%d.f4', k, iter), W);
+		xsave(sprintf('./results/final_%d_%d.f4', k, input), W);
 		xsave(cfg.asgn, A);
 	end
 	loop_times_1 = [loop_times_1 (avg_time_1/3)];

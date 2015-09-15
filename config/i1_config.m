@@ -10,6 +10,11 @@ r = cfg.r;
 if ~cfg.w, cfg.w = cfg.c; end
 if ~cfg.t, cfg.t = inf; end
 
+md(sprintf('%sbook',  cfg.data));
+md(sprintf('%scode',  cfg.data));
+md(sprintf('%sidx',   cfg.data));
+md(sprintf('%srank',  cfg.data));
+
 cfg.grid = sprintf('%sbook/grid_c%d_m%d_k%d.f4', cfg.data, c, m, k);
 cfg.book = sprintf('%sbook/book_c%d_m%d_k%d.f4', cfg.data, c, m, k);
 cfg.cell = sprintf('%scode/cell_c%d_m%d_k%d.%s', cfg.data, c, m, k, cfg.ext(c));
