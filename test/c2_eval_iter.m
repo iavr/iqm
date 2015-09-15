@@ -16,7 +16,7 @@ cfg = c2_config(cfg);
 data = xload(cfg.base);
 %data = load_double_array('/home/user/sift/raw/paris500k.bin', 'single');
 
-n = 100000;
+n = 100000;  % max # of vectors to process so they fit in memory
 [batches,N] = slices(data',n);
 inputs = max(cfg.in) + 1;
 iters = floor(cfg.it_m / cfg.it_i) * inputs;
