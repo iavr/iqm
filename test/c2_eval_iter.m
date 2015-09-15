@@ -10,7 +10,7 @@ cfg.c     = 256;        % # of cells
 
 %--------------------------------
 addpath('../config');
-cfg = c2_config(cfg);
+cfg = c2_config(cfg, false);
 
 %--------------------------------
 data = xload(cfg.base);

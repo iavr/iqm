@@ -1,19 +1,24 @@
-function cfg = c2_config(cfg)
+function cfg = c2_config(cfg, opt)
+
+if nargin < 2, opt = true; end
 
 cfg = config(cfg);
 
 K = cfg.K;
 c = cfg.c;
-m = cfg.m;
-k = cfg.k;
-cfg.cn = uint32(cfg.cn);
-cfg.o  = single(cfg.o);
 
-md(sprintf('%sbook',  cfg.data));
-md(sprintf('%scode',  cfg.data));
-md(sprintf('%sidx',   cfg.data));
-md(sprintf('%sclust', cfg.data));
-md(sprintf('%siter',  cfg.data));
+if opt,
+	m = cfg.m;
+	k = cfg.k;
+	cfg.cn = uint32(cfg.cn);
+	cfg.o  = single(cfg.o);
+
+	md(sprintf('%sbook',  cfg.data));
+	md(sprintf('%scode',  cfg.data));
+	md(sprintf('%sidx',   cfg.data));
+	md(sprintf('%sclust', cfg.data));
+	md(sprintf('%siter',  cfg.data));
+end
 
 cfg.grid   = sprintf('%sbook/grid_c2_c%d_m%d_k%d.f4', cfg.data, c, m, k);
 cfg.book   = sprintf('%sbook/book_c2_c%d_m%d_k%d.f4', cfg.data, c, m, k);
