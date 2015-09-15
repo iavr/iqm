@@ -30,6 +30,9 @@ T = uint32(cfg.t * sum(P(:)) / K);         % search target (# of points x N/K)
 % timing
 times = zeros(1, cfg.it_m);
 
+% save initial centers
+xsave(sprintf(cfg.iter, cfg.K, cfg.in, 0), W);
+
 % main iteration
 for n = 1:cfg.it_m
 

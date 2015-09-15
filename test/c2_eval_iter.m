@@ -2,8 +2,8 @@
 cfg.dataset = 'sift';
 
 cfg.unit  = 'cpu';      % processing unit (cpu or gpu)
-cfg.in    = 0:4;        % input ids
-cfg.it_m  = 20;         % # of iterations (maximum)
+cfg.in    = 0:0;        % input ids
+cfg.it_m  = 5;         % # of iterations (maximum)
 cfg.it_i  = 1;          % # of iterations (increment for saving; 0: no saving)
 cfg.K_m   = 2000;       % # of clusters (maximum)
 cfg.K_i   = 1000;       % # of clusters (increment)
@@ -23,7 +23,7 @@ X = a.on(X);
 n = 100000;  % max # of vectors to process so they fit in memory
 [batches,N] = slices(X',n);
 inputs = max(cfg.in) + 1;
-iters = floor(cfg.it_m / cfg.it_i);
+iters = floor(cfg.it_m / cfg.it_i) + 1;
 kappa = floor(cfg.K_m / cfg.K_i);
 total = inputs * iters * kappa;
 scores = zeros(iters, kappa, 'single');
@@ -33,7 +33,7 @@ done = 0;
 u = cputime;
 for k = 1:kappa
 	K = k * cfg.K_i;
-	for i = 1:iters
+	for i = 0:iters-1
 		iter = i * cfg.it_i;
 		avg = 0;
 		for in = cfg.in
@@ -46,7 +46,7 @@ for k = 1:kappa
 				avg = avg + sum(dist);
 			end
 		end
-		scores(i, k) = avg / N / inputs;
+		scores(i+1, k) = avg / N / inputs;
 	end
 end
 fprintf('\nEvaluation time: %.3fs\n', cputime - u);
