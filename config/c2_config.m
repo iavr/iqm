@@ -4,7 +4,6 @@ if nargin < 2, eval = false; end
 
 cfg = config(cfg);
 
-K = cfg.K;
 c = cfg.c;
 
 if ~eval,
@@ -32,6 +31,7 @@ if ~eval,
 
 end
 
-cfg.cen    = sprintf('%sclust/cen_c2_K%d_c%d_in%%d.f4', cfg.data, K, c);
-cfg.asgn   = sprintf('%sclust/asgn_c2_K%d_c%d_in%%d.u4', cfg.data, K, c);
-cfg.iter   = sprintf('%siter/cen_c2_K%%d_c%d_in%%d_it%%d.f4', cfg.data, c);
+cfg.init   = sprintf('%sinit/initial_centroids_%%d_%%d.csv', cfg.data);
+cfg.cen    = sprintf('%sclust/cen_c2_K%%d_in%%d.f4', cfg.data);
+cfg.asgn   = sprintf('%sclust/asgn_c2_K%%d_in%%d.u4', cfg.data);
+cfg.iter   = sprintf('%siter/cen_c2_K%%d_in%%d_it%%d.f4', cfg.data);

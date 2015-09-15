@@ -4,11 +4,13 @@ cfg.dataset = 'sift';
 cfg.gen = false;
 cfg.verbose = 0;
 %
-cfg.in    = 0:0;        % input ids
+cfg.unit  = 'cpu';      % processing unit (cpu or gpu)
+cfg.input = true;       % use existing input points as initial centers?
+cfg.ids   = 0:4;        % input ids
 cfg.it_m  = 20;         % # of iterations (maximum)
 cfg.it_i  = 1;          % # of iterations (increment for saving; 0: no saving)
-cfg.K_m   = 1000;       % # of clusters (maximum)
-cfg.K     = 1000;       % # of clusters (current/increment)
+cfg.K_m   = 2000;       % # of clusters (maximum)
+cfg.K_i   = 1000;       % # of clusters (increment)
 cfg.c     = 256;        % # of cells
 cfg.sub   = false;      % quantize sub-centroids
 cfg.m     = 16;         % # of subspaces      (only if sub)
@@ -26,11 +28,13 @@ cfg.o     = .0;         % overlap threshold
 %  cfg.gen = false;
 %  cfg.verbose = 2;
 %  %
+%  cfg.unit  = 'cpu';      % processing unit (cpu or gpu)
+%  cfg.input = false;      % use existing input points as initial centers?
 %  cfg.in    = 0:0;        % input ids
 %  cfg.it_m  = 10;         % # of iterations (maximum)
 %  cfg.it_i  = 0;          % # of iterations (increment for saving; 0: no saving)
 %  cfg.K_m   = 24;         % # of clusters (maximum)
-%  cfg.K     = 24;         % # of clusters (current/increment)
+%  cfg.K_i   = 24;         % # of clusters (increment)
 %  cfg.c     = 64;         % # of cells
 %  cfg.sub   = false;      % quantize sub-centroids
 %  cfg.m     = 2;          % # of subspaces      (only if sub)
@@ -77,23 +81,31 @@ cfg = c2_config(cfg);
 %  xsave(cfg.idx, I);
 %  save(cfg.inv, 'cI');
 
-for K = cfg.K:cfg.K:cfg.K_m
+avg = [];
+for K = cfg.K_i:cfg.K_i:cfg.K_m
 	fprintf('Clustering with k = %d\n', K);
 	cfg.K = K;
-	for in = 0:cfg.in
+	total = [0; 0];
+	inputs = max(cfg.in) + 1;
+
+	for in = cfg.ids
 		fprintf('Using initial input %d\n', in);
 		cfg.in = in;
 		cfg = c2_config(cfg);
 
 		%--------------------------------
-		if cfg.verbose, fprintf('Initializing\n'); end
-		G = xload(cfg.grid);
-		B = xload(cfg.book);
-		P = xload(cfg.pop);
-		u = cputime;
-		W = c2_init(cfg, G, B, P);
-		if cfg.verbose, fprintf('Initialize time: %.3fs\n', cputime - u); end
-		xsave(cfg.cen, W);
+		if cfg.input,
+			W = single(csvread(sprintf(cfg.init, K, in))');
+		else
+			if cfg.verbose, fprintf('Initializing\n'); end
+			G = xload(cfg.grid);
+			B = xload(cfg.book);
+			P = xload(cfg.pop);
+			u = cputime;
+			W = c2_init(cfg, G, B, P);
+			if cfg.verbose, fprintf('Initialize time: %.3fs\n', cputime - u); end
+		end
+		xsave(sprintf(cfg.cen, K, in), W);
 
 		%--------------------------------
 		if cfg.verbose, fprintf('Iterating\n'); end
@@ -104,7 +116,7 @@ for K = cfg.K:cfg.K:cfg.K_m
 			X = [];
 			C = [];
 		end
-		W  = xload(cfg.cen);
+		W  = xload(sprintf(cfg.cen, K, in));
 		G  = xload(cfg.grid);
 		B  = xload(cfg.book);
 		E  = xload(cfg.code);
@@ -114,9 +126,13 @@ for K = cfg.K:cfg.K:cfg.K_m
 		cfg.K = size(W, 2);
 		u = cputime;
 		[W,A,times] = c2_iter(cfg, W, G, B, E, P, Mi, M, X, C);
-		fprintf('Iterate time: %.3fs\n', cputime - u);
-		xsave(sprintf(cfg.cen, in), W);
-		xsave(sprintf(cfg.asgn, in), A);
+		u = cputime - u;
+		total = total + [u; sum(times)];
+		fprintf('Iterate time: %.3fs\n', u);
+		xsave(sprintf(cfg.cen, K, in), W);
+		xsave(sprintf(cfg.asgn, K, in), A);
 
 	end
+	avg = [avg total / inputs];
+
 end

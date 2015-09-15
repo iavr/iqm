@@ -7,15 +7,18 @@ global yael xio home
 local
 %-------------------------------------------
 
-% verbose operation?
-if ~isfield(cfg, 'verbose')
-	cfg.verbose = 1;
-end
-
 % matlab path
 addpath(yael, xio);
 addpath('../lib', '../util', '../disp', '../config');
 addpath('../sub', '../quant', '../cluster');
+
+% processing unit (cpu or gpu)
+cfg.alloc = allocator(cfg.unit);
+
+% verbose operation?
+if ~isfield(cfg, 'verbose')
+	cfg.verbose = 1;
+end
 
 % compile mex files
 compile('../lib/alias_setup')

@@ -28,7 +28,7 @@ C = int_dec(int_pack(C, c));               % cell position per point
 T = uint32(cfg.t * sum(P(:)) / K);         % search target (# of points x N/K)
 
 % timing
-times = zeros(1, cfg.it);
+times = zeros(1, cfg.it_m);
 
 % main iteration
 for n = 1:cfg.it_m
