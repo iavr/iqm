@@ -3,8 +3,8 @@ cfg.dataset = 'sift';
 
 cfg.in    = 0:0;        % input ids
 cfg.it_m  = 20;         % # of iterations (maximum)
-cfg.it_i  = 5;          % # of iterations (increment for saving; 0: no saving)
-cfg.K_m   = 2000;       % # of clusters (maximum)
+cfg.it_i  = 1;          % # of iterations (increment for saving; 0: no saving)
+cfg.K_m   = 1000;       % # of clusters (maximum)
 cfg.K     = 1000;       % # of clusters (current/increment)
 cfg.c     = 256;        % # of cells
 
