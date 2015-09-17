@@ -6,7 +6,7 @@ cfg.verbose = 0;
 %
 cfg.unit  = 'cpu';      % processing unit (cpu or gpu)
 cfg.input = true;       % use existing input points as initial centers?
-cfg.ids   = 0:4;        % input ids
+cfg.ids   = 0:2;        % input ids
 cfg.it_m  = 20;         % # of iterations (maximum)
 cfg.it_i  = 1;          % # of iterations (increment for saving; 0: no saving)
 cfg.K_m   = 2000;       % # of clusters (maximum)

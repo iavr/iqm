@@ -21,6 +21,7 @@ if ~isfield(cfg, 'verbose')
 end
 
 % compile mex files
+warning('off');
 compile('../lib/alias_setup')
 compile('../lib/alias_draw')
 compile('../sub/search_lu')

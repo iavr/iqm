@@ -5,5 +5,5 @@ if nargin < 2, force = false; end
 
 [dir, file] = split_path(name);
 if exist(file) ~= 3 || force
-	eval(['mex -outdir ' dir ' ' name '.cpp'])
+	eval(['mex -silent -outdir ' dir ' ' name '.cpp'])
 end
