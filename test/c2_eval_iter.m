@@ -7,7 +7,7 @@ cfg.it_m  = 5;          % # of iterations (maximum)
 cfg.it_i  = 1;          % # of iterations (increment for saving; 0: no saving)
 cfg.K_m   = 2000;       % # of clusters (maximum)
 cfg.K_i   = 1000;       % # of clusters (increment)
-cfg.c     = 256;        % # of cells
+cfg.c     = 512;        % # of cells
 
 %--------------------------------
 addpath('../config');
@@ -37,7 +37,7 @@ for k = 1:kappa
 		iter = i * cfg.it_i;
 		avg = 0;
 		for in = cfg.in
-			msg = 'Currently on k = %d, iteration %d #%d (%.2f%% completed)\n';
+			msg = 'k = %d, iteration %d #%d (%.2f%% completed)\n';
 			fprintf(msg, K, iter, in, done / total * 100)
 			done = done + 1;
 			centers = a.on(xload(sprintf(cfg.iter, K, in, iter)));

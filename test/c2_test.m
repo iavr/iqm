@@ -11,7 +11,7 @@ cfg.it_m  = 20;         % # of iterations (maximum)
 cfg.it_i  = 1;          % # of iterations (increment for saving; 0: no saving)
 cfg.K_m   = 2000;       % # of clusters (maximum)
 cfg.K_i   = 1000;       % # of clusters (increment)
-cfg.c     = 256;        % # of cells
+cfg.c     = 512;        % # of cells
 cfg.sub   = false;      % quantize sub-centroids
 cfg.m     = 16;         % # of subspaces      (only if sub)
 cfg.k     = 256;        % fine codebook size  (only if sub)
@@ -81,18 +81,31 @@ cfg = c2_config(cfg);
 %  xsave(cfg.idx, I);
 %  save(cfg.inv, 'cI');
 
+%  %--------------------------------
+%  fprintf('Sampling input data\n');
+%  X = xload(cfg.base);
+%  for K = 11000:cfg.K_i:cfg.K_m
+%  	if cfg.verbose, fprintf('k = %d samples\n', K), end
+%  	for in = cfg.ids
+%  		n = randperm(size(X,2));
+%  		W = X(:, n(1:K));
+%  		csvwrite(sprintf(cfg.init, K, in), W');
+%  	end
+%  end
+
+%--------------------------------
 avg = [];
 inputs = max(cfg.ids) + 1;
 for K = cfg.K_i:cfg.K_i:cfg.K_m
 	fprintf('Clustering with k = %d\n', K);
 	cfg.K = K;
 	total = [0; 0];
-
+%
 	for in = cfg.ids
 		fprintf('Using initial input %d\n', in);
 		cfg.in = in;
 		cfg = c2_config(cfg);
-
+%
 		%--------------------------------
 		if cfg.input,
 			W = single(csvread(sprintf(cfg.init, K, in))');
@@ -106,7 +119,7 @@ for K = cfg.K_i:cfg.K_i:cfg.K_m
 			if cfg.verbose, fprintf('Initialize time: %.3fs\n', cputime - u); end
 		end
 		xsave(sprintf(cfg.cen, K, in), W);
-
+%
 		%--------------------------------
 		if cfg.verbose, fprintf('Iterating\n'); end
 		if cfg.synth
@@ -131,8 +144,8 @@ for K = cfg.K_i:cfg.K_i:cfg.K_m
 		fprintf('Iterate time: %.3fs\n', u);
 		xsave(sprintf(cfg.cen, K, in), W);
 		xsave(sprintf(cfg.asgn, K, in), A);
-
+%
 	end
 	avg = [avg total / inputs];
-
+%
 end

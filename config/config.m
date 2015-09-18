@@ -9,8 +9,9 @@ local
 
 % matlab path
 addpath(yael, xio);
-addpath('../lib', '../util', '../disp', '../config');
-addpath('../sub', '../quant', '../cluster');
+pre = [pwd '/../'];
+addpath([pre 'lib'], [pre 'util'], [pre 'disp'], [pre 'config']);
+addpath([pre 'sub'], [pre 'quant'], [pre 'cluster']);
 
 % processing unit (cpu or gpu)
 cfg.alloc = allocator(cfg.unit);
@@ -31,8 +32,8 @@ compile('../cluster/ikm_auto', true)
 
 % dataset location
 cfg.home  = home;
-cfg.data  = [cfg.home cfg.dataset '/'];
-cfg.raw   = [cfg.data 'raw/'];
+cfg.data  = [cfg.home '/' cfg.dataset '/'];
+cfg.raw   = [cfg.data '/raw/'];
 
 % dataset choices
 switch cfg.dataset

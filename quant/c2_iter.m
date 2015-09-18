@@ -31,7 +31,7 @@ T = uint32(cfg.t * sum(P(:)) / K);         % search target (# of points x N/K)
 times = zeros(1, cfg.it_m);
 
 % save initial centers
-xsave(sprintf(cfg.iter, cfg.K, cfg.in, 0), W);
+xsave(sprintf(cfg.iter, K, cfg.in, 0), W);
 
 % main iteration
 for n = 1:cfg.it_m
@@ -68,7 +68,7 @@ for n = 1:cfg.it_m
 
 	% save centers every cfg.it_i iterations
 	if mod(n, cfg.it_i) == 0,
-		xsave(sprintf(cfg.iter, cfg.K, cfg.in, n), W);
+		xsave(sprintf(cfg.iter, K, cfg.in, n), W);
 	end
 
 end
