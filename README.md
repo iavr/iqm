@@ -1,16 +1,16 @@
-# [ikm](https://github.com/iavr/ikm)
+# [iqm](https://github.com/iavr/iqm)
 
-`ikm` is a temporary codename for ongoing research work. It stands for *inverted k-means* and concerns fast approximate clustering.
+`iqm` is a temporary codename for ongoing research work. It stands for *inverted-quantized k-means* and concerns fast approximate clustering.
 
 Licence
 -------
 
-`ikm` has a 2-clause BSD license. See file [LICENSE](/LICENSE) for the complete license text.
+`iqm` has a 2-clause BSD license. See file [LICENSE](/LICENSE) for the complete license text.
 
 Directory structure
 -------------------
 
-`ikm` constists primarily of Matlab `.m` files, but also includes a number of `.cpp` files which are compiled as `mex` files to interface Matlab. The directory structure is:
+`iqm` constists primarily of Matlab `.m` files, but also includes a number of `.cpp` files which are compiled as `mex` files to interface Matlab. The directory structure is:
 
 	/anim      animation of algorithm iterations on 2D example
 	/config    project configuration, including datasets, paths etc.
@@ -24,7 +24,7 @@ Directory structure
 Requirements
 ------------
 
-`ikm` requires Matlab, an appropriate C++ compiler to compile `mex` files (e.g. `gcc`) and [yael](http://yael.gforge.inria.fr/) library.
+`iqm` requires Matlab, an appropriate C++ compiler to compile `mex` files (e.g. `gcc`) and [yael](http://yael.gforge.inria.fr/) library.
 
 Setup
 -----
@@ -33,6 +33,6 @@ After installing yael, choose a location on disk, say `home`, where to store dat
 
 	home/sift/raw/
 
-`ikm` uses the specific filenames and file formats as given in the link above. A number of additional folders for output will be created automatically under `home/sift/`.
+`iqm` uses the specific filenames and file formats as given in the link above. A number of additional folders for output will be created automatically under `home/sift/`.
 
-Finally, edit [/config/config.m](/config/config.m) and adjust the location of `home` and `yael` to your local settings. Now you can try any of the samples under [/test/](/test/). The `mex` files should compile automatically.
+Finally, edit [/config/local.m](/config/local.m) and adjust the location of `home` and `yael` to your local settings. Now you can try any of the samples under [/test/](/test/). The `mex` files should compile automatically.
