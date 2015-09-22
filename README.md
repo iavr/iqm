@@ -24,7 +24,7 @@ Directory structure
 Requirements
 ------------
 
-`iqm` requires Matlab, an appropriate C++ compiler to compile `mex` files (e.g. `gcc`) and [yael](http://yael.gforge.inria.fr/) library.
+`iqm` requires Matlab, an appropriate C++ compiler to compile `mex` files (e.g. `gcc`), [yael](http://yael.gforge.inria.fr/) library, and [xio](http://github.com/iavr/xio/) library.
 
 Setup
 -----
