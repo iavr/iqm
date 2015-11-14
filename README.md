@@ -36,3 +36,10 @@ After installing yael, choose a location on disk, say `home`, where to store dat
 `iqm` uses the specific filenames and file formats as given in the link above. A number of additional folders for output will be created automatically under `home/sift/`.
 
 Finally, edit [/config/local.m](/config/local.m) and adjust the location of `home` and `yael` to your local settings. Now you can try any of the samples under [/test/](/test/). The `mex` files should compile automatically.
+
+Citation
+--------
+
+Please cite the following paper if you use this software.
+
+Y. Avrithis, Y. Kalantidis, E. Anagnostopoulos, and I. Z. Emiris. [Web-scale image clustering revisited](http://image.ntua.gr/iva/iqm/). In Proceedings of International Conference on Computer Vision (Oral) ([ICCV 2015](http://pamitc.org/iccv15/)), Santiago, Chile, December 2015.
