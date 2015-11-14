@@ -42,4 +42,4 @@ Citation
 
 Please cite the following paper if you use this software.
 
-Y. Avrithis, Y. Kalantidis, E. Anagnostopoulos, and I. Z. Emiris. [Web-scale image clustering revisited](http://image.ntua.gr/iva/iqm/). In Proceedings of International Conference on Computer Vision (Oral) ([ICCV 2015](http://pamitc.org/iccv15/)), Santiago, Chile, December 2015.
+Y. Avrithis, Y. Kalantidis, E. Anagnostopoulos, and I. Z. Emiris. [Web-scale image clustering revisited](http://image.ntua.gr/iva/iqm/). In Proceedings of International Conference on Computer Vision ([ICCV 2015](http://pamitc.org/iccv15/)), Santiago, Chile, December 2015.
