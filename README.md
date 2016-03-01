@@ -1,6 +1,6 @@
 # [iqm](https://github.com/iavr/iqm)
 
-`iqm` is a temporary codename for ongoing research work. It stands for *inverted-quantized k-means* and concerns fast approximate clustering.
+`iqm` stands for *inverted-quantized k-means* (IQ-means) and implements a method for fast approximate clustering.
 
 Licence
 -------
